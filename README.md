@@ -45,11 +45,10 @@ Learning:
 #### Applications☕
 
 - [Moemu/VocaStar](https://github.com/Moemu/VocaStar): 一个职业规划与测评平台，在学校软件设计大赛的决赛上荣获二等奖 (Public Archive)
-- [Moemu/RichiDrama](https://github.com/Moemu/RichiDrama): 瑞池传媒 AI 短剧生产平台。支持项目、素材、分镜、视频生成、账户、计费与自托管部署 (前实习维护项目 / AI Coding)
 - [Moemu/Muyan](https://github.com/Moemu/Muyan): With so many AI chat apps available, this one is uniquely yours. (AI Coding)
 - [Moemu/Erika](https://github.com/Moemu/Erika): 为你的仓库绘制 GrokBot Banner 的 API 女仆. (AI Coding)
+- Haruka: 站在灯塔上向远方报信的少女，把孤独的人格遥遥传给远方的访客 (AI Coding)
 - Muice-CLI: TypeScript 练手作品 (In Early Planning)
-- Muika-Monitor: Muika 监视器，在手机上静默收集信息 (In Early Planning)
 
 #### Plugins🧩
 
@@ -65,7 +64,8 @@ Learning:
 - [Anduin2017/HowToCook](https://github.com/Anduin2017/HowToCook): Programmer's guide about how to cook at home. [#1407](https://github.com/Anduin2017/HowToCook/pull/1407)
 - [hiyohiyo/CrystalDiskInfo](https://github.com/hiyohiyo/CrystalDiskInfo): CrystalDiskInfo. [#266](https://github.com/hiyohiyo/CrystalDiskInfo/pull/266) [#272](https://github.com/hiyohiyo/CrystalDiskInfo/pull/272)
 - [TrueRou/maimai.py](https://github.com/TrueRou/maimai.py): The definitive python wrapper for MaimaiCN related development. 用于国服舞萌相关开发的最佳Python工具库。 [#45](https://github.com/TrueRou/maimai.py/pull/45) [#47](https://github.com/TrueRou/maimai.py/pull/47)
-- [shikanon/cookies](https://github.com/shikanon/cookies): Cookies, where ads understand needs. (前实习维护项目 / AI Coding)
+- [shikanon/cookies](https://github.com/shikanon/cookies): Cookies, where ads understand needs. (前实习项目 / AI Coding)
+- [Moemu/RichiDrama](https://github.com/Moemu/RichiDrama): 瑞池传媒 AI 短剧生产平台。支持项目、素材、分镜、视频生成、账户、计费与自托管部署 (前实习项目 / 前生产部署仓库 / AI Coding)
 
 #### Research & Papers📄
 
