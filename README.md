@@ -8,6 +8,7 @@ Hi there! I'm takomi. .
 
 ![](https://img.shields.io/badge/Windows-11-2376bc?style=flat-square&logo=Windows&logoColor=ffffff)
 ![](https://img.shields.io/badge/Debian-13-e95420?style=flat-square&logo=Debian)
+![Ubuntu 20.04](https://img.shields.io/badge/Ubuntu-20.04-e95420?style=flat-square&logo=Ubuntu)
 ![](https://img.shields.io/badge/Android-10-34a853?style=flat-square&logo=Android)
 ![](https://img.shields.io/badge/Android-13-34a853?style=flat-square&logo=Android)
 ![](https://img.shields.io/badge/Android-15-34a853?style=flat-square&logo=Android)
