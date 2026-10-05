@@ -24,13 +24,9 @@ Learning:
 
 [![](https://github-readme-stats.vercel.app/api/top-langs/?username=takomitkm&layout=compact&theme=buefy&exclude_repo=MizukiBlog,Moemu.github.io,waline,Moemu2.0Website,github-readme-stats,Privacy-RSSHub)](https://github.com/anuraghazra/github-readme-stats)
 
-### Coding Time
-
-[![wakatime](https://github-readme-stats.vercel.app/api/wakatime?username=TaKoMi&langs_count=5&theme=buefy)](https://github.com/anuraghazra/github-readme-stats)
-
 ### Contact me
 
-[![Email](https://img.shields.io/badge/Email-this ms-blue?style=flat-square)](mailto:takomitkm@outlook.com)
-[![Blog](https://img.shields.io/badge/Website-GitHub Pages-brightgreen?style=flat-square)](https://https://takomitkm.github.io/)
+[![Email](https://img.shields.io/badge/Email-outlook-blue?style=flat-square)](mailto:takomitkm@outlook.com)
+[![Blog](https://img.shields.io/badge/Website-GitHubPages-brightgreen?style=flat-square)](https://https://takomitkm.github.io/)
 [![Bilibili](https://img.shields.io/badge/Bilibili-tkm八爪咪-ff69b4?style=flat-square)](https://space.bilibili.com/675978454)
 [![QQ Group](https://img.shields.io/badge/QQ群-无-purple?style=flat-square)](https://qm.qq.com/q/)
