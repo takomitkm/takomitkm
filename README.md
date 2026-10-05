@@ -18,17 +18,15 @@ Learning:
 
 ### Github stats
 
-[![Moemu's github stats](https://stats.snowy.moe/api?username=takomitkm&show_icons=true&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage&theme=buefy)](https://github.com/anuraghazra/github-readme-stats)
+[![Moemu's github stats](https://github-readme-stats.vercel.app/api?username=takomitkm&show_icons=true&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage&theme=buefy)](https://github.com/anuraghazra/github-readme-stats)
 
 ### Top langs
 
-[![](https://stats.snowy.moe/api/top-langs/?username=takomitkm&layout=compact&theme=buefy&exclude_repo=MizukiBlog,Moemu.github.io,waline,Moemu2.0Website,github-readme-stats,Privacy-RSSHub)](https://github.com/anuraghazra/github-readme-stats)
+[![](https://github-readme-stats.vercel.app/api/top-langs/?username=takomitkm&layout=compact&theme=buefy&exclude_repo=MizukiBlog,Moemu.github.io,waline,Moemu2.0Website,github-readme-stats,Privacy-RSSHub)](https://github.com/anuraghazra/github-readme-stats)
 
 ### Coding Time
 
-[![wakatime](https://wakatime.com/badge/user/637d5886-8b47-4b82-9264-3b3b9d6add67.svg)](https://wakatime.com/@637d5886-8b47-4b82-9264-3b3b9d6add67)
-
-[![wakatime](https://stats.snowy.moe/api/wakatime?username=Moemu&langs_count=5&theme=buefy)](https://github.com/anuraghazra/github-readme-stats)
+[![wakatime](https://github-readme-stats.vercel.app/api/wakatime?username=TaKoMi&langs_count=5&theme=buefy)](https://github.com/anuraghazra/github-readme-stats)
 
 ### Contact me
 
