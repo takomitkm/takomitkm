@@ -16,6 +16,7 @@ Hi there! I'm takomi. .
 Learning:
 
 ![](https://img.shields.io/badge/-GitHub-181717?style=flat-square&logo=GitHub&logoColor=white)
+![](https://img.shields.io/badge/-AI-412991?style=flat-square&logo=OpenAI&logoColor=white)
 
 ### Github stats
 
