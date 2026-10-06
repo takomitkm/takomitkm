@@ -31,3 +31,7 @@ Learning:
 [![Blog](https://img.shields.io/badge/Website-GitHubPages-brightgreen?style=flat-square)](https://https://takomitkm.github.io/)
 [![Bilibili](https://img.shields.io/badge/Bilibili-tkm八爪咪-ff69b4?style=flat-square)](https://space.bilibili.com/675978454)
 [![QQ Group](https://img.shields.io/badge/QQ群-无-purple?style=flat-square)](https://qm.qq.com/q/)
+
+### Tips
+
+All repos with the `-AIGC` suffix are entirely LLM-generated and have not received any code-level review from me.
