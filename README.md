@@ -20,11 +20,11 @@ Learning:
 
 ### Github stats
 
-[![Moemu's github stats](https://github-readme-stats.vercel.app/api?username=takomitkm&show_icons=true&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage&theme=buefy)](https://github.com/anuraghazra/github-readme-stats)
+[![tkm's github stats](https://github-readme-stats.vercel.app/api?username=takomitkm&show_icons=true&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage&theme=buefy)](https://github.com/anuraghazra/github-readme-stats)
 
 ### Top langs
 
-[![](https://github-readme-stats.vercel.app/api/top-langs/?username=takomitkm&layout=compact&theme=buefy&exclude_repo=MizukiBlog,Moemu.github.io,waline,Moemu2.0Website,github-readme-stats,Privacy-RSSHub)](https://github.com/anuraghazra/github-readme-stats)
+[![](https://github-readme-stats.vercel.app/api/top-langs/?username=takomitkm&layout=compact&theme=buefy&exclude_repo=github-readme-stats)](https://github.com/anuraghazra/github-readme-stats)
 
 ### Contact me
 
