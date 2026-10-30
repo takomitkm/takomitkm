@@ -34,7 +34,7 @@ jobs:
         uses: stats-organization/github-readme-stats-action@2c498845f71017821efaad14293ebc736156ef21 # v2.1.0
         with:
           card: top-langs
-          options: username=${{ github.repository_owner }}&layout=compact&theme=buefy&exclude_repo=github-readme-stats
+          options: username=${{ github.repository_owner }}&layout=compact&theme=buefy&exclude_repo=github-readme-stats&langs_count=8
           path: profile/top-langs.svg
           token: ${{ secrets.GITHUB_TOKEN }}
 
