@@ -20,16 +20,16 @@ Learning:
 
 ### Github stats
 
-[![tkm's github stats](https://github-readme-stats.vercel.app/api?username=takomitkm&show_icons=true&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage&theme=buefy)](https://github.com/anuraghazra/github-readme-stats)
+[![tkm's github stats](https://github-stats-extended.vercel.app/api?username=takomitkm&show_icons=true&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage&theme=buefy)](https://github.com/stats-organization/github-stats-extended)
 
 ### Top langs
 
-[![](https://github-readme-stats.vercel.app/api/top-langs/?username=takomitkm&layout=compact&theme=buefy&exclude_repo=github-readme-stats)](https://github.com/anuraghazra/github-readme-stats)
+[![](https://github-stats-extended.vercel.app/api/top-langs/?username=takomitkm&layout=compact&theme=buefy&exclude_repo=github-readme-stats)](https://github.com/stats-organization/github-stats-extended)
 
 ### Contact me
 
 [![Email](https://img.shields.io/badge/Email-outlook-blue?style=flat-square)](mailto:takomitkm@outlook.com)
-[![Blog](https://img.shields.io/badge/Website-GitHubPages-brightgreen?style=flat-square)](https://https://takomitkm.github.io/)
+[![Blog](https://img.shields.io/badge/Website-GitHubPages-brightgreen?style=flat-square)](https://takomitkm.github.io/)
 [![Bilibili](https://img.shields.io/badge/Bilibili-tkm八爪咪-ff69b4?style=flat-square)](https://space.bilibili.com/675978454)
 [![QQ Group](https://img.shields.io/badge/QQ群-无-purple?style=flat-square)](https://qm.qq.com/q/)
 
