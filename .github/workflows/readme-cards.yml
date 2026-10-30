@@ -5,6 +5,11 @@ on:
     # UTC 20:00 == Asia/Taipei 04:00
     - cron: "0 20 * * *"
   workflow_dispatch:
+  push:
+    # Only when this workflow file itself changes, so the bot's own
+    # profile/*.svg commit can never re-trigger the job.
+    paths:
+      - ".github/workflows/readme-cards.yml"
 
 jobs:
   build:
