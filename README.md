@@ -20,11 +20,11 @@ Learning:
 
 ### Github stats
 
-[![tkm's github stats](https://github-stats-extended.vercel.app/api?username=takomitkm&show_icons=true&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage&theme=buefy)](https://github.com/stats-organization/github-stats-extended)
+[![tkm's github stats](./profile/stats.svg)](https://github.com/stats-organization/github-stats-extended)
 
 ### Top langs
 
-[![](https://github-stats-extended.vercel.app/api/top-langs/?username=takomitkm&layout=compact&theme=buefy&exclude_repo=github-readme-stats)](https://github.com/stats-organization/github-stats-extended)
+[![](./profile/top-langs.svg)](https://github.com/stats-organization/github-stats-extended)
 
 ### Contact me
 
