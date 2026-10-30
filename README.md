@@ -36,3 +36,5 @@ Learning:
 ### Tips
 
 All repos with the `-AIGC` suffix are entirely LLM-generated and have not received any code-level review from me.
+
+<!-- cards refresh on push: test -->
