@@ -13,7 +13,7 @@ Hi there! I'm takomi. .
 ![](https://img.shields.io/badge/Android-13-34a853?style=flat-square&logo=Android)
 ![](https://img.shields.io/badge/Android-15-34a853?style=flat-square&logo=Android)
 
-Learning:
+### Learning:
 
 ![](https://img.shields.io/badge/-GitHub-181717?style=flat-square&logo=GitHub&logoColor=white)
 ![](https://img.shields.io/badge/-AI-412991?style=flat-square&logo=OpenAI&logoColor=white)
