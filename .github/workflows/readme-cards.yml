@@ -43,12 +43,51 @@ jobs:
           core_version: 2.3.0
           token: ${{ secrets.STATS_PAT }}
 
+      # 上游 top-langs 没有"排除私有"开关，只能具名排除：每次运行用 STATS_PAT 现拉
+      # 可见的私有库短名（去掉与公开库同名者，避免误伤公开库），新增私有库无需改本文件。
+      - name: Collect private repos to exclude from top-langs
+        id: private_repos
+        env:
+          GH_TOKEN: ${{ secrets.STATS_PAT }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request as u
+          tok = os.environ['GH_TOKEN']
+          def get(url):
+              r = u.Request(url, headers={'Authorization': 'token ' + tok,
+                                          'User-Agent': 'readme-cards',
+                                          'Accept': 'application/vnd.github+json'})
+              return json.load(u.urlopen(r, timeout=30))
+          def listing(visibility):
+              out, page = [], 1
+              while True:
+                  d = get('https://api.github.com/user/repos'
+                          '?affiliation=owner,collaborator,organization_member'
+                          '&per_page=100&page=%d&visibility=%s' % (page, visibility))
+                  out += d
+                  if len(d) < 100:
+                      break
+                  page += 1
+              return out
+          priv = {r['name'] for r in listing('private')}
+          pub = {r['name'] for r in listing('public')}
+          clash = sorted(priv & pub)
+          names = ['github-readme-stats'] + sorted(priv - pub)
+          exclude = ','.join(names)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write('exclude=' + exclude + '\n')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
+              f.write('top-langs `exclude_repo`: `%s`\n' % exclude)
+          print('exclude_repo =', exclude)
+          if clash:
+              print('::warning::%s: private repo shares a short name with a public repo, '
+                    'left included to avoid hiding the public one' % ','.join(clash))
+          PY
       - name: Generate top languages card
         uses: stats-organization/github-readme-stats-action@2c498845f71017821efaad14293ebc736156ef21 # v2.1.0
         with:
           card: top-langs
-          # 私有库一律不计：语言查询没有 private 过滤开关，只能具名排除（新增私有库时同步这里）
-          options: username=${{ github.repository_owner }}&role=OWNER,COLLABORATOR,ORGANIZATION_MEMBER&layout=compact&theme=buefy&exclude_repo=github-readme-stats,WCIS-FPAI-wiki,tetripy&langs_count=8
+          options: username=${{ github.repository_owner }}&role=OWNER,COLLABORATOR,ORGANIZATION_MEMBER&layout=compact&theme=buefy&exclude_repo=${{ steps.private_repos.outputs.exclude }}&langs_count=8
           path: profile/top-langs.svg
           core_version: 2.3.0
           token: ${{ secrets.STATS_PAT }}
