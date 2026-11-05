@@ -15,7 +15,7 @@
 // bytes are weighted by the number of commits YOU made to that repo (from the
 // contribution graph). This is a proxy for "where you actually worked", not an exact
 // per-author byte count. See https://docs.github.com/en/account-and-profile/reference/profile-contributions-reference
-import { writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import path from "node:path";
 
@@ -181,6 +181,24 @@ if (bytesRaw === 0) {
 }
 
 // upstream default formatting: size^1 * count^0 (count is repo count, exponent 0)
+// --- keep the README note in sync with the number computed above -------------------
+// Reuses publicRepos (already counted for the card). No second discovery pass.
+const README_PATH = process.env.README_PATH || "README.md";
+const noteLine = `按你 commit 数加权 · ${publicRepos} 个公开库（个人公开库 ＋ 各年公开贡献记录发现的组织/他人公开库）`;
+try {
+  if (existsSync(README_PATH)) {
+    const md = readFileSync(README_PATH, "utf8");
+    const updated = md.replace(/^按你 commit 数加权 · .*$/m, noteLine);
+    if (updated !== md) {
+      writeFileSync(README_PATH, updated);
+      console.log(`updated ${README_PATH}: ${noteLine}`);
+    } else {
+      console.log(`${README_PATH}: note line already current`);
+    }
+  }
+} catch (err) {
+  console.log(`::warning::could not update README note: ${err.message}`);
+}
 const sorted = Object.fromEntries(
   Object.entries(languages).sort(([, a], [, b]) => b.size - a.size),
 );
