@@ -1,25 +1,26 @@
-// Public-only top-languages card generator.
+// Public-only top-languages card generator (contribution-driven, no manual org list).
 //
-// Why this exists: upstream resolves `affiliations: [ORGANIZATION_MEMBER]`
-// against the API *viewer*, so a bot token (GITHUB_TOKEN) can never see the
-// organisation repos the account belongs to, and a personal token is needed
-// otherwise. This script builds the same language map from PUBLIC data only
-// (own public repos + an explicit org list), then reuses the upstream renderer
-// so the card looks identical.
+// Why this exists: the card should show languages across every public repository
+// the account has contributed to, for all contribution years, without a personal
+// token and without hardcoding any organization name.
 //
-// NOTE: do not pass `affiliations:` in the own-repos query. GitHub resolves that
-// filter against the API *viewer*, so under a bot token it silently drops the
-// user's own repos; omitting it returns them regardless of viewer.
+// Discovery source: GitHub public contribution history. For each contribution year
+// we read the per-repository commit/issue/PR/review groups, filter to public repos,
+// deduplicate by stable repository ID (handles renames/transfers), and aggregate
+// languages. We also add the user's own public repos via ownerAffiliations so owned
+// repos that predate contribution tracking still appear.
+//
+// Scope honesty: GitHub profile contribution criteria exclude some activity (e.g.
+// commits only on non-default branches, in forks, or without an attributed email).
+// The card therefore reflects "public repositories discovered from contribution
+// history across all years", not a literal guarantee of every public repo ever
+// touched. See https://docs.github.com/en/account-and-profile/reference/profile-contributions-reference
 import { writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import path from "node:path";
 
 const token = process.env.GH_TOKEN;
 const login = process.env.CARD_USER;
-const orgs = (process.env.CARD_ORGS || "")
-  .split(",")
-  .map((s) => s.trim())
-  .filter(Boolean);
 const out = process.env.CARD_OUT || "profile/top-langs.svg";
 const coreDir = process.env.CORE_DIR;
 const langsCount = Number(process.env.LANGS_COUNT || 8);
@@ -45,43 +46,93 @@ const gql = async (query, variables) => {
   return json.data;
 };
 
-const LANGS = "languages(first: 10) { edges { size node { name color } } }";
+// 1) own public repos (ownerAffiliations filters the viewed user, not the viewer)
 const OWN_QUERY = `query ($login: String!, $first: Int!) {
   user(login: $login) {
-    repositories(first: $first, isFork: false) {
-      nodes { nameWithOwner ${LANGS} }
-    }
-  }
-}`;
-const ORG_QUERY = `query ($login: String!, $first: Int!) {
-  organization(login: $login) {
-    repositories(first: $first, isFork: false) {
-      nodes { nameWithOwner isPrivate ${LANGS} }
+    repositories(first: $first, ownerAffiliations: [OWNER], isFork: false) {
+      nodes { id nameWithOwner isPrivate languages(first: 10) { edges { size node { name color } } } }
     }
   }
 }`;
 
-const repos = [];
+// 2) contribution years + per-year public repo groups
+const YEARS_QUERY = `query ($login: String!) {
+  user(login: $login) { contributionsCollection { contributionYears } }
+}`;
+const YEAR_QUERY = `query ($login: String!, $from: DateTime!, $to: DateTime!) {
+  user(login: $login) {
+    contributionsCollection(from: $from, to: $to) {
+      commitContributionsByRepository(maxRepositories: 100) { repository { id nameWithOwner isPrivate } }
+      issueContributionsByRepository(maxRepositories: 100) { repository { id nameWithOwner isPrivate } }
+      pullRequestContributionsByRepository(maxRepositories: 100) { repository { id nameWithOwner isPrivate } }
+      pullRequestReviewContributionsByRepository(maxRepositories: 100) { repository { id nameWithOwner isPrivate } }
+    }
+  }
+}`;
+
+const repos = new Map(); // id -> { id, nameWithOwner, isPrivate, languages }
+const addRepo = (node, languages = []) => {
+  if (!node || !node.id) return;
+  if (!repos.has(node.id)) {
+    repos.set(node.id, {
+      id: node.id,
+      nameWithOwner: node.nameWithOwner,
+      isPrivate: node.isPrivate,
+      languages,
+    });
+  }
+};
+
+// own public repos (with language bytes already inlined)
 const own = await gql(OWN_QUERY, { login, first: 100 });
 for (const node of own.user.repositories.nodes) {
-  if (node) repos.push(node);
-}
-for (const org of orgs) {
-  try {
-    const data = await gql(ORG_QUERY, { login: org, first: 100 });
-    for (const node of data.organization.repositories.nodes) {
-      // defensive: a bot token cannot read private repos anyway
-      if (node && !node.isPrivate) repos.push(node);
-    }
-  } catch (err) {
-    console.log(`::warning::org ${org} skipped: ${err.message}`);
-  }
+  if (node) addRepo(node, node.languages?.edges ?? []);
 }
 
-const languages = {};
+// contribution-driven public repos (languages fetched separately by id)
+const { contributionYears } = (await gql(YEARS_QUERY, { login })).user
+  .contributionsCollection;
+const langCache = new Map(); // id -> edges
+const fetchLanguages = async (id) => {
+  if (langCache.has(id)) return langCache.get(id);
+  const q = `query ($id: ID!) {
+    node(id: $id) {
+      ... on Repository { languages(first: 10) { edges { size node { name color } } } }
+    }
+  }`;
+  const data = await gql(q, { id });
+  const edges = data.node?.languages?.edges ?? [];
+  langCache.set(id, edges);
+  return edges;
+};
+
+let scannedYears = 0;
+for (const year of contributionYears) {
+  const from = `${year}-01-01T00:00:00Z`;
+  const to = `${year}-12-31T23:59:59Z`;
+  const col = (
+    await gql(YEAR_QUERY, { login, from, to })
+  ).user.contributionsCollection;
+  for (const key of [
+    "commitContributionsByRepository",
+    "issueContributionsByRepository",
+    "pullRequestContributionsByRepository",
+    "pullRequestReviewContributionsByRepository",
+  ]) {
+    for (const item of col[key]) addRepo(item.repository);
+  }
+  scannedYears += 1;
+}
+
+// fetch languages for contributed (non-owned) repos, then drop private
+let publicRepos = 0;
 let bytes = 0;
-for (const repo of repos) {
-  for (const edge of repo.languages?.edges ?? []) {
+const languages = {};
+for (const repo of repos.values()) {
+  if (repo.isPrivate) continue;
+  const edges = repo.languages?.length ? repo.languages : await fetchLanguages(repo.id);
+  publicRepos += 1;
+  for (const edge of edges) {
     if (!edge || !edge.node) continue;
     const key = edge.node.name;
     const current = languages[key];
@@ -120,5 +171,6 @@ const svg = renderTopLanguages(sorted, {
 });
 writeFileSync(out, svg);
 console.log(
-  `wrote ${out}: ${Object.keys(sorted).length} languages from ${repos.length} public repos (${bytes} bytes)`,
+  `wrote ${out}: ${Object.keys(sorted).length} languages from ${publicRepos} public repos ` +
+    `(${bytes} bytes); scanned ${scannedYears}/${contributionYears.length} contribution years`,
 );
