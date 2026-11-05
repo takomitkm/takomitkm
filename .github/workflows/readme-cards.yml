@@ -38,7 +38,7 @@ jobs:
         uses: stats-organization/github-readme-stats-action@2c498845f71017821efaad14293ebc736156ef21 # v2.1.0
         with:
           card: stats
-          options: username=${{ github.repository_owner }}&include_all_commits=true&show_icons=true&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage,all_time_contribs&theme=buefy
+          options: username=${{ github.repository_owner }}&role=OWNER,COLLABORATOR,ORGANIZATION_MEMBER&include_all_commits=true&show_icons=true&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage,all_time_contribs&theme=buefy
           path: profile/stats.svg
           core_version: 2.3.0
           token: ${{ github.token }}
