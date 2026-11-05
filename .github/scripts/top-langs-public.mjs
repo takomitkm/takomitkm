@@ -50,7 +50,7 @@ const gql = async (query, variables) => {
 const OWN_QUERY = `query ($login: String!, $first: Int!) {
   user(login: $login) {
     repositories(first: $first, ownerAffiliations: [OWNER], isFork: false) {
-      nodes { id nameWithOwner isPrivate languages(first: 10) { edges { size node { name color } } } }
+      nodes { id name nameWithOwner isPrivate stargazerCount languages(first: 10) { edges { size node { name color } } } }
     }
   }
 }`;
@@ -64,12 +64,12 @@ const YEAR_QUERY = `query ($login: String!, $from: DateTime!, $to: DateTime!) {
   user(login: $login) {
     contributionsCollection(from: $from, to: $to) {
       commitContributionsByRepository(maxRepositories: 100) {
-        repository { id nameWithOwner isPrivate }
+        repository { id name nameWithOwner isPrivate stargazerCount }
         contributions { totalCount }
       }
-      issueContributionsByRepository(maxRepositories: 100) { repository { id nameWithOwner isPrivate } }
-      pullRequestContributionsByRepository(maxRepositories: 100) { repository { id nameWithOwner isPrivate } }
-      pullRequestReviewContributionsByRepository(maxRepositories: 100) { repository { id nameWithOwner isPrivate } }
+      issueContributionsByRepository(maxRepositories: 100) { repository { id name nameWithOwner isPrivate stargazerCount } }
+      pullRequestContributionsByRepository(maxRepositories: 100) { repository { id name nameWithOwner isPrivate stargazerCount } }
+      pullRequestReviewContributionsByRepository(maxRepositories: 100) { repository { id name nameWithOwner isPrivate stargazerCount } }
     }
   }
 }`;
@@ -80,8 +80,10 @@ const addRepo = (node, languages = []) => {
   if (!repos.has(node.id)) {
     repos.set(node.id, {
       id: node.id,
+      name: node.name,
       nameWithOwner: node.nameWithOwner,
       isPrivate: node.isPrivate,
+      stars: node.stargazerCount ?? 0,
       languages,
     });
   }
