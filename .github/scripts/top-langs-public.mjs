@@ -7,9 +7,9 @@
 // (own public repos + an explicit org list), then reuses the upstream renderer
 // so the card looks identical.
 //
-// Inputs (env): GH_TOKEN, CARD_USER, CARD_ORGS (comma separated), CARD_OUT,
-//               CORE_DIR, LANGS_COUNT
-import { writeFileSync } from "node:fs";
+// NOTE: do NOT pass `affiliations:` here - GitHub resolves that filter against the
+// API *viewer*, so under a bot token it silently drops the user own repos. Omitting it
+// returns the queried user own repos regardless of viewer (verified with strangers).
 import { pathToFileURL } from "node:url";
 import path from "node:path";
 
@@ -47,7 +47,7 @@ const gql = async (query, variables) => {
 const LANGS = "languages(first: 10) { edges { size node { name color } } }";
 const OWN_QUERY = `query ($login: String!, $first: Int!) {
   user(login: $login) {
-    repositories(first: $first, affiliations: [OWNER], isFork: false) {
+    repositories(first: $first, isFork: false) {
       nodes { nameWithOwner ${LANGS} }
     }
   }
