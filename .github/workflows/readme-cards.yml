@@ -43,60 +43,25 @@ jobs:
           core_version: 2.3.0
           token: ${{ secrets.STATS_PAT }}
 
-      # 上游 top-langs 没有"排除私有"开关，只能具名排除：每次运行用 STATS_PAT 现拉
-      # 可见的私有库短名（去掉与公开库同名者，避免误伤公开库），新增私有库无需改本文件。
-      - name: Collect private repos to exclude from top-langs
-        id: private_repos
-        env:
-          GH_TOKEN: ${{ secrets.STATS_PAT }}
+      - name: Install card renderer core (public-data path)
         run: |
-          python3 - <<'PY'
-          import json, os, urllib.request as u
-          tok = os.environ['GH_TOKEN']
-          def get(url):
-              r = u.Request(url, headers={'Authorization': 'token ' + tok,
-                                          'User-Agent': 'readme-cards',
-                                          'Accept': 'application/vnd.github+json'})
-              return json.load(u.urlopen(r, timeout=30))
-          def listing(visibility):
-              out, page = [], 1
-              while True:
-                  d = get('https://api.github.com/user/repos'
-                          '?affiliation=owner,collaborator,organization_member'
-                          '&per_page=100&page=%d&visibility=%s' % (page, visibility))
-                  out += d
-                  if len(d) < 100:
-                      break
-                  page += 1
-              return out
-          priv = {r['name'] for r in listing('private')}
-          pub = {r['name'] for r in listing('public')}
-          clash = sorted(priv & pub)
-          names = ['github-readme-stats'] + sorted(priv - pub)
-          exclude = ','.join(names)
-          # 这是 PUBLIC 仓库：run 日志与 summary 人人可见，私有库名一旦打印即泄露。
-          # 先把每个私有短名注册成掩码，再让带名字的那行日志走 ***；summary 只写数量。
-          for n in sorted(priv):
-              print('::add-mask::' + n, flush=True)
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
-              f.write('exclude=' + exclude + '\n')
-          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
-              f.write('top-langs excludes %d private repo(s) (names masked)\n' % len(priv - pub))
-          print('excluded private repos:', len(priv - pub))
-          if clash:
-              print('::warning::%d private repo name(s) clash with a public repo name and '
-                    'were left in the card to avoid hiding the public one' % len(clash))
-          PY
-      - name: Generate top languages card
-        uses: stats-organization/github-readme-stats-action@2c498845f71017821efaad14293ebc736156ef21 # v2.1.0
-        with:
-          card: top-langs
-          options: username=${{ github.repository_owner }}&role=OWNER,COLLABORATOR,ORGANIZATION_MEMBER&layout=compact&theme=buefy&exclude_repo=${{ steps.private_repos.outputs.exclude }}&langs_count=8
-          path: profile/top-langs.svg
-          core_version: 2.3.0
-          # 语言卡优先用"只能读公开库"的 fine-grained token：私有库压根不进查询，
-          # 无需具名排除。该 secret 未配置时自动回退到 STATS_PAT（行为不变）。
-          token: ${{ secrets.STATS_PAT_PUBLIC || secrets.STATS_PAT }}
+          mkdir -p "$RUNNER_TEMP/cardcore"
+          npm install --prefix "$RUNNER_TEMP/cardcore" --no-save --ignore-scripts \
+            @stats-organization/github-readme-stats-core@2.3.0
+
+      # 语言卡改走公开数据：个人公开库 + CARD_ORGS 里显式列出的 org 公开库。
+      # 上游的 affiliations 按"访问者"解析，bot 身份拿不到组织仓库，故不复用它的取数；
+      # 渲染仍用上游 renderTopLanguages，观感一致。私有库因为 bot token 读不到，天然被排除。
+      # 需要新增组织时只改 CARD_ORGS。
+      - name: Generate top languages card (public repos only)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CARD_USER: ${{ github.repository_owner }}
+          CARD_ORGS: WCIS-Team
+          CARD_OUT: profile/top-langs.svg
+          CORE_DIR: ${{ runner.temp }}/cardcore/node_modules/@stats-organization/github-readme-stats-core
+          LANGS_COUNT: "8"
+        run: node .github/scripts/top-langs-public.mjs
 
       - name: Commit cards
         run: |
