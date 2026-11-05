@@ -59,7 +59,7 @@ jobs:
           CARD_USER: ${{ github.repository_owner }}
           CARD_OUT: profile/top-langs.svg
           CORE_DIR: ${{ runner.temp }}/cardcore/node_modules/@stats-organization/github-readme-stats-core
-          LANGS_COUNT: "8"
+          LANGS_COUNT: "20"
         run: node .github/scripts/top-langs-public.mjs
 
       - name: Commit cards
