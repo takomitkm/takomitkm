@@ -38,17 +38,17 @@ jobs:
         uses: stats-organization/github-readme-stats-action@2c498845f71017821efaad14293ebc736156ef21 # v2.1.0
         with:
           card: stats
-          options: username=${{ github.repository_owner }}&show_icons=true&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage&theme=buefy
+          options: username=${{ github.repository_owner }}&include_all_commits=true&include_all_time_contribs=true&count_private=true&owner_affiliations=OWNER,COLLABORATOR,ORGANIZATION_MEMBER&show_icons=true&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage&theme=buefy
           path: profile/stats.svg
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.STATS_PAT }}
 
       - name: Generate top languages card
         uses: stats-organization/github-readme-stats-action@2c498845f71017821efaad14293ebc736156ef21 # v2.1.0
         with:
           card: top-langs
-          options: username=${{ github.repository_owner }}&layout=compact&theme=buefy&exclude_repo=github-readme-stats&langs_count=8
+          options: username=${{ github.repository_owner }}&owner_affiliations=OWNER,COLLABORATOR,ORGANIZATION_MEMBER&layout=compact&theme=buefy&exclude_repo=github-readme-stats&langs_count=8
           path: profile/top-langs.svg
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.STATS_PAT }}
 
       - name: Commit cards
         run: |
