@@ -94,7 +94,9 @@ jobs:
           options: username=${{ github.repository_owner }}&role=OWNER,COLLABORATOR,ORGANIZATION_MEMBER&layout=compact&theme=buefy&exclude_repo=${{ steps.private_repos.outputs.exclude }}&langs_count=8
           path: profile/top-langs.svg
           core_version: 2.3.0
-          token: ${{ secrets.STATS_PAT }}
+          # 语言卡优先用"只能读公开库"的 fine-grained token：私有库压根不进查询，
+          # 无需具名排除。该 secret 未配置时自动回退到 STATS_PAT（行为不变）。
+          token: ${{ secrets.STATS_PAT_PUBLIC || secrets.STATS_PAT }}
 
       - name: Commit cards
         run: |
