@@ -10,11 +10,11 @@
 // languages. We also add the user's own public repos via ownerAffiliations so owned
 // repos that predate contribution tracking still appear.
 //
-// Scope honesty: GitHub profile contribution criteria exclude some activity (e.g.
-// commits only on non-default branches, in forks, or without an attributed email).
-// The card therefore reflects "public repositories discovered from contribution
-// history across all years", not a literal guarantee of every public repo ever
-// touched. See https://docs.github.com/en/account-and-profile/reference/profile-contributions-reference
+// Weighting (commit-count proxy): GitHub exposes no per-author language bytes, so the
+// card cannot show "bytes you personally wrote". Instead each repository's language
+// bytes are weighted by the number of commits YOU made to that repo (from the
+// contribution graph). This is a proxy for "where you actually worked", not an exact
+// per-author byte count. See https://docs.github.com/en/account-and-profile/reference/profile-contributions-reference
 import { writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import path from "node:path";
@@ -55,14 +55,18 @@ const OWN_QUERY = `query ($login: String!, $first: Int!) {
   }
 }`;
 
-// 2) contribution years + per-year public repo groups
+// 2) contribution years + per-year public repo groups (commit group also returns
+//    your commit count per repo, used as the contribution weight)
 const YEARS_QUERY = `query ($login: String!) {
   user(login: $login) { contributionsCollection { contributionYears } }
 }`;
 const YEAR_QUERY = `query ($login: String!, $from: DateTime!, $to: DateTime!) {
   user(login: $login) {
     contributionsCollection(from: $from, to: $to) {
-      commitContributionsByRepository(maxRepositories: 100) { repository { id nameWithOwner isPrivate } }
+      commitContributionsByRepository(maxRepositories: 100) {
+        repository { id nameWithOwner isPrivate }
+        contributions { totalCount }
+      }
       issueContributionsByRepository(maxRepositories: 100) { repository { id nameWithOwner isPrivate } }
       pullRequestContributionsByRepository(maxRepositories: 100) { repository { id nameWithOwner isPrivate } }
       pullRequestReviewContributionsByRepository(maxRepositories: 100) { repository { id nameWithOwner isPrivate } }
@@ -106,6 +110,8 @@ const fetchLanguages = async (id) => {
   return edges;
 };
 
+// per-repo commit count (your contributions) -> contribution weight
+const commitCounts = new Map();
 let scannedYears = 0;
 for (const year of contributionYears) {
   const from = `${year}-01-01T00:00:00Z`;
@@ -113,8 +119,14 @@ for (const year of contributionYears) {
   const col = (
     await gql(YEAR_QUERY, { login, from, to })
   ).user.contributionsCollection;
+  for (const item of col.commitContributionsByRepository) {
+    addRepo(item.repository);
+    if (item.repository?.id) {
+      const c = item.contributions?.totalCount || 0;
+      commitCounts.set(item.repository.id, (commitCounts.get(item.repository.id) || 0) + c);
+    }
+  }
   for (const key of [
-    "commitContributionsByRepository",
     "issueContributionsByRepository",
     "pullRequestContributionsByRepository",
     "pullRequestReviewContributionsByRepository",
@@ -124,37 +136,39 @@ for (const year of contributionYears) {
   scannedYears += 1;
 }
 
-// fetch languages for contributed (non-owned) repos, then drop private
+// fetch languages for contributed (non-owned) repos, then aggregate with commit weighting
 let publicRepos = 0;
-let bytes = 0;
+let bytesRaw = 0;
 const languages = {};
 for (const repo of repos.values()) {
   if (repo.isPrivate) continue;
+  const weight = commitCounts.get(repo.id) || 1; // proxy: your commit activity in this repo
   const edges = repo.languages?.length ? repo.languages : await fetchLanguages(repo.id);
   publicRepos += 1;
   for (const edge of edges) {
     if (!edge || !edge.node) continue;
     const key = edge.node.name;
+    const sized = edge.size * weight;
     const current = languages[key];
     if (current) {
-      current.size += edge.size;
+      current.size += sized;
       current.count += 1;
     } else {
       languages[key] = {
         name: key,
         color: edge.node.color || "#555555",
-        size: edge.size,
+        size: sized,
         count: 1,
       };
     }
-    bytes += edge.size;
+    bytesRaw += edge.size;
   }
 }
-if (bytes === 0) {
+if (bytesRaw === 0) {
   throw new Error("no language bytes fetched; refusing to overwrite the card");
 }
 
-// upstream default weighting: size^1 * count^0
+// upstream default formatting: size^1 * count^0 (count is repo count, exponent 0)
 const sorted = Object.fromEntries(
   Object.entries(languages).sort(([, a], [, b]) => b.size - a.size),
 );
@@ -172,5 +186,5 @@ const svg = renderTopLanguages(sorted, {
 writeFileSync(out, svg);
 console.log(
   `wrote ${out}: ${Object.keys(sorted).length} languages from ${publicRepos} public repos ` +
-    `(${bytes} bytes); scanned ${scannedYears}/${contributionYears.length} contribution years`,
+    `(${bytesRaw} raw bytes, commit-weighted); scanned ${scannedYears}/${contributionYears.length} contribution years`,
 );
