@@ -1,8 +1,8 @@
 
       <svg
-        width="300"
+        width="683"
         height="340"
-        viewBox="0 0 300 340"
+        viewBox="0 0 683 340"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         role="img"
@@ -83,6 +83,7 @@
       }
     
           
+        .card-note { font: 400 11px 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif; fill: #363636; }
         </style>
 
         
@@ -100,7 +101,7 @@
           rx="4.5"
           height="99%"
           stroke="#e4e2e2"
-          width="299"
+          width="682"
           fill="#ffffff"
           stroke-opacity="1"
         />
@@ -478,7 +479,8 @@
   </g></g>
     </g>
   
-    </svg>
+    <text x="318" y="39" class="card-note" data-testid="card-note">按你 commit 数加权 · 20 个公开库（个人公开＋各年贡献记录发现）</text>
+      </svg>
   
         </g>
       </svg>
