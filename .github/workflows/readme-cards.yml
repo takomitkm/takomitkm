@@ -49,7 +49,7 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/cardcore" --no-save --ignore-scripts \
             @stats-organization/github-readme-stats-core@2.3.0
 
-      # 语言卡改走公开数据：个人公开库 + CARD_ORGS 里显式列出的 org 公开库。
+      # 语言卡改走公开数据：个人公开库 + CARD_USER 公开库。
       # 上游的 affiliations 按"访问者"解析，bot 身份拿不到组织仓库，故不复用它的取数；
       # 渲染仍用上游 renderTopLanguages，观感一致。私有库因为 bot token 读不到，天然被排除。
       # 需要新增组织时只改 CARD_ORGS。
@@ -57,7 +57,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           CARD_USER: ${{ github.repository_owner }}
-          CARD_ORGS: WCIS-Team
+          CARD_USER: ${{ github.repository_owner }}
           CARD_OUT: profile/top-langs.svg
           CORE_DIR: ${{ runner.temp }}/cardcore/node_modules/@stats-organization/github-readme-stats-core
           LANGS_COUNT: "8"
