@@ -26,6 +26,8 @@ Hi there! I'm takomi. .
 
 [![](./profile/top-langs.svg)](https://github.com/stats-organization/github-stats-extended)
 
+按你 commit 数加权 · 20 个公开库（个人公开库 ＋ 各年公开贡献记录发现的组织/他人公开库）
+
 ### Contact me
 
 [![Email](https://img.shields.io/badge/Email-outlook-blue?style=flat-square)](mailto:takomitkm@outlook.com)
