@@ -192,7 +192,10 @@ const { pickColorParams } = await import(toUrl("build/common/color.js"));
 // No second discovery pass: the repo set above already knows which repos are public,
 // how many stars they carry, and which ones the account contributed to across years.
 const publicList = [...repos.values()].filter((r) => !r.isPrivate);
-const totalStars = publicList.reduce((sum, r) => sum + (r.stars ?? 0), 0);
+// "Total Stars Earned" counts stars on repositories the account OWNS, not on every
+// repo it merely contributed to - otherwise a big third-party project would inflate it.
+const ownPublic = publicList.filter((r) => ownIds.has(r.id));
+const totalStars = ownPublic.reduce((sum, r) => sum + (r.stars ?? 0), 0);
 
 const USER_STATS_QUERY = `query ($login: String!) {
   user(login: $login) {
@@ -257,7 +260,7 @@ const statsData = {
     prs: totalPRs,
     reviews: totalReviews,
     issues: totalIssues,
-    repos: publicList.length,
+    repos: ownPublic.length,
     stars: totalStars,
     followers: su.followers.totalCount,
   }),
