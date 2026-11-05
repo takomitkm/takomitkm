@@ -273,40 +273,7 @@ const svg = renderTopLanguages(sorted, {
   hide_title: false,
 });
 
-// --- note to the right of the card -------------------------------------------------
-// GitHub strips inline CSS from README markdown, so a normal-weight, non-wrapping
-// note cannot be written as page text. SVG text is not subject to that: it keeps an
-// explicit font-weight and never wraps. We widen the card and append the note.
-// Scope text lives here so it always matches what the generator actually counted.
-const NOTE =
-  process.env.CARD_NOTE ||
-  `按你 commit 数加权 · ${publicRepos} 个公开库（个人公开＋各年贡献记录发现）`;
-const CARD_W = 300;
-const GAP_L = 18;
-const GAP_R = 14;
-const cjk = /[\u3000-\u9fff\uff00-\uffef]/;
-const noteWidth = [...NOTE].reduce((w, ch) => w + (cjk.test(ch) ? 11 : 6.2), 0);
-const totalW = Math.ceil(CARD_W + GAP_L + noteWidth + GAP_R);
-const esc = (s) =>
-  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-if (svg.split('width="300"').length !== 2) {
-  throw new Error("svg width attribute not in expected shape; refusing to widen");
-}
-let outSvg = svg
-  .replace('width="300"', `width="${totalW}"`)
-  .replace('viewBox="0 0 300 340"', `viewBox="0 0 ${totalW} 340"`)
-  .replace('width="299"', `width="${totalW - 1}"`)
-  .replace(
-    "</style>",
-    `.card-note { font: 400 11px 'Segoe UI', Ubuntu, "Helvetica Neue", Sans-Serif; fill: #363636; }
-        </style>`,
-  )
-  .replace(
-    "</svg>",
-    `<text x="${CARD_W + GAP_L}" y="39" class="card-note" data-testid="card-note">${esc(NOTE)}</text>
-      </svg>`,
-  );
-writeFileSync(out, outSvg);
+writeFileSync(out, svg);
 
 const statsSvg = renderStatsCard(
   statsData,
