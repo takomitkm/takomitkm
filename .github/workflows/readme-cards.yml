@@ -34,15 +34,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
-      - name: Generate stats card
-        uses: stats-organization/github-readme-stats-action@2c498845f71017821efaad14293ebc736156ef21 # v2.1.0
-        with:
-          card: stats
-          options: username=${{ github.repository_owner }}&role=OWNER,COLLABORATOR,ORGANIZATION_MEMBER&include_all_commits=true&show_icons=true&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage,all_time_contribs&theme=buefy
-          path: profile/stats.svg
-          core_version: 2.3.0
-          token: ${{ github.token }}
-
       - name: Install card renderer core (public-data path)
         run: |
           mkdir -p "$RUNNER_TEMP/cardcore"
@@ -53,11 +44,12 @@ jobs:
       # 上游的 affiliations 按"访问者"解析，bot 身份拿不到组织仓库，故不复用它的取数；
       # 渲染仍用上游 renderTopLanguages，观感一致。私有库因为 bot token 读不到，天然被排除。
       # 取数完全由贡献记录驱动，新增贡献会自动出现，无需改此配置。
-      - name: Generate top languages card (public repos only)
+      - name: Generate cards (stats + top languages, single scan)
         env:
           GH_TOKEN: ${{ github.token }}
           CARD_USER: ${{ github.repository_owner }}
           CARD_OUT: profile/top-langs.svg
+          STATS_OUT: profile/stats.svg
           CORE_DIR: ${{ runner.temp }}/cardcore/node_modules/@stats-organization/github-readme-stats-core
           LANGS_COUNT: "20"
         run: node .github/scripts/top-langs-public.mjs
