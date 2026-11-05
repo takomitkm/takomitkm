@@ -74,14 +74,18 @@ jobs:
           clash = sorted(priv & pub)
           names = ['github-readme-stats'] + sorted(priv - pub)
           exclude = ','.join(names)
+          # 这是 PUBLIC 仓库：run 日志与 summary 人人可见，私有库名一旦打印即泄露。
+          # 先把每个私有短名注册成掩码，再让带名字的那行日志走 ***；summary 只写数量。
+          for n in sorted(priv):
+              print('::add-mask::' + n, flush=True)
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
               f.write('exclude=' + exclude + '\n')
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
-              f.write('top-langs `exclude_repo`: `%s`\n' % exclude)
-          print('exclude_repo =', exclude)
+              f.write('top-langs excludes %d private repo(s) (names masked)\n' % len(priv - pub))
+          print('excluded private repos:', len(priv - pub))
           if clash:
-              print('::warning::%s: private repo shares a short name with a public repo, '
-                    'left included to avoid hiding the public one' % ','.join(clash))
+              print('::warning::%d private repo name(s) clash with a public repo name and '
+                    'were left in the card to avoid hiding the public one' % len(clash))
           PY
       - name: Generate top languages card
         uses: stats-organization/github-readme-stats-action@2c498845f71017821efaad14293ebc736156ef21 # v2.1.0
