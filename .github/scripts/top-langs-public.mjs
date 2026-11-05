@@ -7,9 +7,10 @@
 // (own public repos + an explicit org list), then reuses the upstream renderer
 // so the card looks identical.
 //
-// NOTE: do NOT pass `affiliations:` here - GitHub resolves that filter against the
-// API *viewer*, so under a bot token it silently drops the user own repos. Omitting it
-// returns the queried user own repos regardless of viewer (verified with strangers).
+// NOTE: do not pass `affiliations:` in the own-repos query. GitHub resolves that
+// filter against the API *viewer*, so under a bot token it silently drops the
+// user's own repos; omitting it returns them regardless of viewer.
+import { writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import path from "node:path";
 
