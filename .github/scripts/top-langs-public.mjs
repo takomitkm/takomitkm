@@ -22,6 +22,7 @@ import path from "node:path";
 const token = process.env.GH_TOKEN;
 const login = process.env.CARD_USER;
 const out = process.env.CARD_OUT || "profile/top-langs.svg";
+const statsOut = process.env.STATS_OUT || "profile/stats.svg";
 const coreDir = process.env.CORE_DIR;
 const langsCount = Number(process.env.LANGS_COUNT || 8);
 
@@ -90,9 +91,13 @@ const addRepo = (node, languages = []) => {
 };
 
 // own public repos (with language bytes already inlined)
+const ownIds = new Set();
 const own = await gql(OWN_QUERY, { login, first: 100 });
 for (const node of own.user.repositories.nodes) {
-  if (node) addRepo(node, node.languages?.edges ?? []);
+  if (node) {
+    addRepo(node, node.languages?.edges ?? []);
+    if (node.id) ownIds.add(node.id);
+  }
 }
 
 // contribution-driven public repos (languages fetched separately by id)
@@ -114,6 +119,7 @@ const fetchLanguages = async (id) => {
 
 // per-repo commit count (your contributions) -> contribution weight
 const commitCounts = new Map();
+const contributedIds = new Set(); // repos reached through contribution records
 let scannedYears = 0;
 for (const year of contributionYears) {
   const from = `${year}-01-01T00:00:00Z`;
@@ -123,6 +129,7 @@ for (const year of contributionYears) {
   ).user.contributionsCollection;
   for (const item of col.commitContributionsByRepository) {
     addRepo(item.repository);
+    if (item.repository?.id) contributedIds.add(item.repository.id);
     if (item.repository?.id) {
       const c = item.contributions?.totalCount || 0;
       commitCounts.set(item.repository.id, (commitCounts.get(item.repository.id) || 0) + c);
@@ -133,7 +140,10 @@ for (const year of contributionYears) {
     "pullRequestContributionsByRepository",
     "pullRequestReviewContributionsByRepository",
   ]) {
-    for (const item of col[key]) addRepo(item.repository);
+    for (const item of col[key]) {
+      addRepo(item.repository);
+      if (item.repository?.id) contributedIds.add(item.repository.id);
+    }
   }
   scannedYears += 1;
 }
@@ -178,6 +188,80 @@ const sorted = Object.fromEntries(
 const toUrl = (p) => pathToFileURL(path.join(coreDir, p)).href;
 const { renderTopLanguages } = await import(toUrl("build/cards/top-languages.js"));
 const { pickColorParams } = await import(toUrl("build/common/color.js"));
+// --- stats card from the SAME scan -------------------------------------------------
+// No second discovery pass: the repo set above already knows which repos are public,
+// how many stars they carry, and which ones the account contributed to across years.
+const publicList = [...repos.values()].filter((r) => !r.isPrivate);
+const totalStars = publicList.reduce((sum, r) => sum + (r.stars ?? 0), 0);
+
+const USER_STATS_QUERY = `query ($login: String!) {
+  user(login: $login) {
+    name
+    login
+    followers { totalCount }
+    pullRequests(first: 1) { totalCount }
+    mergedPullRequests: pullRequests(states: MERGED) { totalCount }
+    openIssues: issues(states: OPEN) { totalCount }
+    closedIssues: issues(states: CLOSED) { totalCount }
+    reviews: contributionsCollection { totalPullRequestReviewContributions }
+    repositoryDiscussions { totalCount }
+    repositoryDiscussionComments(onlyAnswers: true) { totalCount }
+    repositoriesContributedTo(first: 1, contributionTypes: [COMMIT, ISSUE, PULL_REQUEST, REPOSITORY]) { totalCount }
+  }
+}`;
+const su = (await gql(USER_STATS_QUERY, { login })).user;
+
+const searchCommitCount = async (user) => {
+  const res = await fetch(
+    "https://api.github.com/search/commits?per_page=1&q=" + encodeURIComponent(`author:${user}`),
+    {
+      headers: {
+        Authorization: `bearer ${token}`,
+        Accept: "application/vnd.github.cloak-preview",
+        "User-Agent": "readme-cards",
+      },
+    },
+  );
+  const json = await res.json();
+  if (typeof json.total_count !== "number") {
+    throw new Error("commit search failed: " + JSON.stringify(json).slice(0, 200));
+  }
+  return json.total_count;
+};
+
+const totalCommits = await searchCommitCount(login);
+const totalPRs = su.pullRequests.totalCount;
+const totalPRsMerged = su.mergedPullRequests.totalCount;
+const totalIssues = su.openIssues.totalCount + su.closedIssues.totalCount;
+const totalReviews = su.reviews.totalPullRequestReviewContributions;
+const { calculateRank } = await import(toUrl("build/calculateRank.js"));
+const { renderStatsCard } = await import(toUrl("build/cards/stats.js"));
+
+const statsData = {
+  name: su.name || su.login,
+  totalStars,
+  totalCommits,
+  totalPRs,
+  totalPRsMerged,
+  mergedPRsPercentage: totalPRs ? (totalPRsMerged / totalPRs) * 100 : 0,
+  totalReviews,
+  totalIssues,
+  totalDiscussionsStarted: su.repositoryDiscussions?.totalCount ?? 0,
+  totalDiscussionsAnswered: su.repositoryDiscussionComments?.totalCount ?? 0,
+  contributedTo: su.repositoriesContributedTo.totalCount,
+  // own repos excluded, matching upstream's default (contribs_include_own_repos = false)
+  allTimeContributedTo: [...contributedIds].filter((id) => !ownIds.has(id)).length,
+  rank: calculateRank({
+    all_commits: true,
+    commits: totalCommits,
+    prs: totalPRs,
+    reviews: totalReviews,
+    issues: totalIssues,
+    repos: publicList.length,
+    stars: totalStars,
+    followers: su.followers.totalCount,
+  }),
+};
 
 const svg = renderTopLanguages(sorted, {
   ...pickColorParams({ theme: "buefy" }),
@@ -220,6 +304,29 @@ let outSvg = svg
       </svg>`,
   );
 writeFileSync(out, outSvg);
+
+const statsSvg = renderStatsCard(
+  statsData,
+  {
+    ...pickColorParams({ theme: "buefy" }),
+    show_icons: true,
+    include_all_commits: true,
+    show: [
+      "reviews",
+      "discussions_started",
+      "discussions_answered",
+      "prs_merged",
+      "prs_merged_percentage",
+      "all_time_contribs",
+    ],
+  },
+  login,
+);
+writeFileSync(statsOut, statsSvg);
+console.log(
+  `wrote ${statsOut}: stars=${totalStars} commits=${totalCommits} prs=${totalPRs} ` +
+    `merged=${totalPRsMerged} issues=${totalIssues} contributedTo=${statsData.contributedTo}/${statsData.allTimeContributedTo}`,
+);
 console.log(
   `wrote ${out}: ${Object.keys(sorted).length} languages from ${publicRepos} public repos ` +
     `(${bytesRaw} raw bytes, commit-weighted); scanned ${scannedYears}/${contributionYears.length} contribution years`,
