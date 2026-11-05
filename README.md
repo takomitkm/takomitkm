@@ -22,7 +22,7 @@ Hi there! I'm takomi. .
 
 [![tkm's github stats](./profile/stats.svg)](https://github.com/stats-organization/github-stats-extended)
 
-### Top langs <span style="font-weight:400;font-size:0.6em;white-space:nowrap">按你在 20 个公开仓库的 commit 数加权（个人公开库＋各年公开贡献记录发现的组织/他人库）</span>
+### Top langs
 
 [![](./profile/top-langs.svg)](https://github.com/stats-organization/github-stats-extended)
 
