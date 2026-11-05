@@ -41,7 +41,7 @@ jobs:
           options: username=${{ github.repository_owner }}&include_all_commits=true&show_icons=true&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage,all_time_contribs&theme=buefy
           path: profile/stats.svg
           core_version: 2.3.0
-          token: ${{ secrets.STATS_PAT }}
+          token: ${{ github.token }}
 
       - name: Install card renderer core (public-data path)
         run: |
