@@ -1,6 +1,6 @@
 # TaKoMi
 
-こんにちは、たこみ/八爪咪です✨大三在读，毕业即失业
+こんにちは、たこみ/八爪咪です✨IC专业大三在读，毕业即失业
 
 Hi there! I'm takomi. .
 
@@ -36,4 +36,5 @@ Hi there! I'm takomi. .
 ### Tips
 
 All repos with the `-AIGC` suffix are entirely LLM-generated and have not received any code-level review from me.
+I’m definitely abusing vibe coding—just look at all these commits.
 
