@@ -20,7 +20,7 @@ Hi there! I'm takomi. .
 
 ### Github stats
 
-[![tkm's github stats](https://github-stats-extended.vercel.app/api?username=takomitkm&include_all_commits=true&include_all_time_contribs=true&owner_affiliations=OWNER,COLLABORATOR,ORGANIZATION_MEMBER&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage&rank_icon=github&number_format=long)](https://github.com/stats-organization/github-stats-extended)
+[![tkm's github stats](./profile/stats.svg)](https://github.com/stats-organization/github-stats-extended)
 
 ### Top langs
 
