@@ -4,6 +4,10 @@
 
 Hi there! I'm takomi. .
 
+```
+Every repository I own remains my responsibility until archived.
+```
+
 ### Platforms & Code
 
 ![](https://img.shields.io/badge/Windows-11-2376bc?style=flat-square&logo=Windows&logoColor=ffffff)
