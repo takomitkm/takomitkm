@@ -22,6 +22,7 @@ import path from "node:path";
 const token = process.env.GH_TOKEN;
 const login = process.env.CARD_USER;
 const out = process.env.CARD_OUT || "profile/top-langs.svg";
+const unweightedOut = process.env.UNWEIGHTED_CARD_OUT || "profile/top-langs-unweighted.svg";
 const statsOut = process.env.STATS_OUT || "profile/stats.svg";
 const coreDir = process.env.CORE_DIR;
 const langsCount = Number(process.env.LANGS_COUNT || 8);
@@ -152,6 +153,7 @@ for (const year of contributionYears) {
 let publicRepos = 0;
 let bytesRaw = 0;
 const languages = {};
+const unweightedLanguages = {};
 for (const repo of repos.values()) {
   if (repo.isPrivate) continue;
   const weight = commitCounts.get(repo.id) || 1; // proxy: your commit activity in this repo
@@ -160,18 +162,23 @@ for (const repo of repos.values()) {
   for (const edge of edges) {
     if (!edge || !edge.node) continue;
     const key = edge.node.name;
-    const sized = edge.size * weight;
-    const current = languages[key];
-    if (current) {
-      current.size += sized;
-      current.count += 1;
-    } else {
-      languages[key] = {
-        name: key,
-        color: edge.node.color || "#555555",
-        size: sized,
-        count: 1,
-      };
+    // Both cards use the same repositories and fetched language bytes.
+    for (const [target, size] of [
+      [languages, edge.size * weight],
+      [unweightedLanguages, edge.size],
+    ]) {
+      const current = target[key];
+      if (current) {
+        current.size += size;
+        current.count += 1;
+      } else {
+        target[key] = {
+          name: key,
+          color: edge.node.color || "#555555",
+          size,
+          count: 1,
+        };
+      }
     }
     bytesRaw += edge.size;
   }
@@ -184,11 +191,11 @@ if (bytesRaw === 0) {
 // --- keep the README note in sync with the number computed above -------------------
 // Reuses publicRepos (already counted for the card). No second discovery pass.
 const README_PATH = process.env.README_PATH || "README.md";
-const noteLine = `按你 commit 数加权 · ${publicRepos} 个公开库（个人公开库 ＋ 各年公开贡献记录发现的组织/他人公开库）`;
+const noteLine = `同一批 ${publicRepos} 个公开库（个人公开库 ＋ 各年公开贡献记录发现的组织/他人公开库）；左图按你的 commit 数加权，右图按原始语言字节数汇总。`;
 try {
   if (existsSync(README_PATH)) {
     const md = readFileSync(README_PATH, "utf8");
-    const updated = md.replace(/^按你 commit 数加权 · .*$/m, noteLine);
+    const updated = md.replace(/^(?:按你 commit 数加权 · |同一批 \d+ 个公开库).*$/m, noteLine);
     if (updated !== md) {
       writeFileSync(README_PATH, updated);
       console.log(`updated ${README_PATH}: ${noteLine}`);
@@ -292,6 +299,21 @@ const svg = renderTopLanguages(sorted, {
 });
 
 writeFileSync(out, svg);
+
+const unweightedSorted = Object.fromEntries(
+  Object.entries(unweightedLanguages).sort(([, a], [, b]) => b.size - a.size),
+);
+const unweightedSvg = renderTopLanguages(unweightedSorted, {
+  ...pickColorParams({ theme: "buefy" }),
+  layout: "compact",
+  langs_count: langsCount,
+  hide_title: false,
+});
+writeFileSync(unweightedOut, unweightedSvg);
+console.log(
+  `wrote ${unweightedOut}: ${Object.keys(unweightedSorted).length} languages from ` +
+    `${publicRepos} public repos (${bytesRaw} raw bytes, unweighted)`,
+);
 
 const statsSvg = renderStatsCard(
   statsData,
