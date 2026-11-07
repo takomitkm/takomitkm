@@ -9,7 +9,7 @@
         aria-labelledby="descId"
       >
         <title id="titleId">tkm&#39;s GitHub Stats, Rank: C</title>
-        <desc id="descId">Total Stars Earned: 0, Total Commits  : 253, Total PRs: 14, Total PRs Merged: 4, Merged PRs Percentage: 28.57, Total PRs Reviewed: 0, Total Issues: 5, Total Discussions Started: 2, Total Discussions Answered: 0, Contributed to (last year): 20, Contributed to (all time): 20</desc>
+        <desc id="descId">Total Stars Earned: 0, Total Commits  : 253, Total PRs: 15, Total PRs Merged: 4, Merged PRs Percentage: 26.67, Total PRs Reviewed: 0, Total Issues: 5, Total Discussions Started: 2, Total Discussions Answered: 0, Contributed to (last year): 21, Contributed to (all time): 21</desc>
         <style>
           .header {
             font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif;
@@ -73,7 +73,7 @@
         stroke-dashoffset: 251.32741228718345;
       }
       to {
-        stroke-dashoffset: 224.81045608911086;
+        stroke-dashoffset: 224.09802952597286;
       }
     }
   
@@ -199,7 +199,7 @@
         x="224.01"
         y="12.5"
         data-testid="prs"
-      >14</text>
+      >15</text>
     </g>
   </g><g transform="translate(0, 75)">
     <g class="stagger" style="animation-delay: 900ms" transform="translate(25, 0)">
@@ -229,7 +229,7 @@
         x="224.01"
         y="12.5"
         data-testid="prs_merged_percentage"
-      >28.57 %</text>
+      >26.67 %</text>
     </g>
   </g><g transform="translate(0, 125)">
     <g class="stagger" style="animation-delay: 1200ms" transform="translate(25, 0)">
@@ -304,7 +304,7 @@
         x="224.01"
         y="12.5"
         data-testid="contribs"
-      >20</text>
+      >21</text>
     </g>
   </g><g transform="translate(0, 250)">
     <g class="stagger" style="animation-delay: 1950ms" transform="translate(25, 0)">
@@ -319,7 +319,7 @@
         x="224.01"
         y="12.5"
         data-testid="all_time_contribs"
-      >20</text>
+      >21</text>
     </g>
   </g>
     </svg>
