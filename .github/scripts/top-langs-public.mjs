@@ -1,14 +1,13 @@
-// Public-only top-languages card generator (contribution-driven, no manual org list).
+// Public-only language cards: own public repos + public repos with authored PRs.
 //
-// Why this exists: the card should show languages across every public repository
-// the account has contributed to, for all contribution years, without a personal
-// token and without hardcoding any organization name.
+// Language-card inclusion uses the user's own non-fork repositories plus every
+// public repository where the user authored a PR (open, closed or merged).
+// PRs are paginated directly, rather than inferred from yearly contribution groups.
+// Repository IDs deduplicate renamed/transferred repos and repeated PRs.
 //
-// Discovery source: GitHub public contribution history. For each contribution year
-// we read the per-repository commit/issue/PR/review groups, filter to public repos,
-// deduplicate by stable repository ID (handles renames/transfers), and aggregate
-// languages. We also add the user's own public repos via ownerAffiliations so owned
-// repos that predate contribution tracking still appear.
+// Yearly contribution groups still supply commit weights and the stats card's
+// existing contribution metrics. Issue/review/commit-only external repositories
+// do not enter the language cards or their repository breakdown.
 //
 // Weighting (commit-count proxy): GitHub exposes no per-author language bytes, so the
 // card cannot show "bytes you personally wrote". Instead each repository's language
@@ -101,7 +100,35 @@ for (const node of own.user.repositories.nodes) {
   }
 }
 
-// contribution-driven public repos (languages fetched separately by id)
+// Authored PRs, across all states and pages. Reviewing somebody else's PR does
+// not qualify a repository. Keep this set separate from stats-card discovery.
+const PR_QUERY = `query ($login: String!, $after: String) {
+  user(login: $login) {
+    pullRequests(first: 100, after: $after, states: [OPEN, CLOSED, MERGED]) {
+      nodes { repository { id name nameWithOwner isPrivate stargazerCount } }
+      pageInfo { hasNextPage endCursor }
+    }
+  }
+}`;
+const prRepoIds = new Set();
+let prCursor = null;
+do {
+  const connection = (await gql(PR_QUERY, { login, after: prCursor })).user.pullRequests;
+  for (const pr of connection.nodes) {
+    const repo = pr?.repository;
+    if (!repo?.id || repo.isPrivate) continue;
+    addRepo(repo);
+    prRepoIds.add(repo.id);
+  }
+  if (!connection.pageInfo.hasNextPage) break;
+  const nextCursor = connection.pageInfo.endCursor;
+  if (!nextCursor || nextCursor === prCursor) {
+    throw new Error("authored PR pagination did not advance");
+  }
+  prCursor = nextCursor;
+} while (true);
+
+// Contribution history for commit weights and the stats card's discovery.
 const { contributionYears } = (await gql(YEARS_QUERY, { login })).user
   .contributionsCollection;
 const langCache = new Map(); // id -> edges
@@ -156,7 +183,7 @@ const languages = {};
 const unweightedLanguages = {};
 const repoDetails = [];
 for (const repo of repos.values()) {
-  if (repo.isPrivate) continue;
+  if (repo.isPrivate || (!ownIds.has(repo.id) && !prRepoIds.has(repo.id))) continue;
   const weight = commitCounts.get(repo.id) || 1; // proxy: your commit activity in this repo
   const edges = repo.languages?.length ? repo.languages : await fetchLanguages(repo.id);
   publicRepos += 1;
@@ -229,7 +256,8 @@ const detailsBlock = [
   `| **合计** | **${integer(commitTotal)}** | — | **${integer(bytesRaw)}** | **100.00%** | **100.00%** | — |`,
   "",
   "- commit 数：GitHub 各年公开贡献记录中归属于你的 commit 数之和；0 表示该扫描未发现你的 commit 贡献记录。",
-  "- 权重 = commit 数；为 0 时按现有卡片算法取 1。仓库可能由 issue、PR、review 或个人公开库列表发现。",
+  "- 收录范围：个人公开非 fork 仓库，以及你本人提交过 PR 的外部公开仓库；PR 包括打开、关闭和已合并的，只有 issue、review 或 commit 的外部仓库不收录。",
+  "- 权重 = commit 数；为 0 时按现有卡片算法取 1。PR 尚未合并或以 squash 等方式合并时，可能有 PR 而未查到你的 commit 记录。",
   "- 无加权占比 = 本仓库语言字节数 ÷ 全部仓库语言字节数；加权占比 = 本仓库语言字节数 × 权重 ÷ 全部仓库的加权字节数。",
   "- 语言字节数是 GitHub 返回的仓库语言数据（每库最多前 10 种语言），并非你个人编写的字节数；主要语言的百分比以本仓库采集到的语言字节数为分母。",
   "- 表格包含全部采集到的语言；卡片仅展示各自前 20 种语言并重新归一化，因此表格按仓库汇总的占比与卡片按语言展示的占比口径不同。百分比四舍五入后可能不恰好相加为 100%。",
@@ -238,7 +266,7 @@ const detailsBlock = [
   "<!-- lang-repo-details:end -->",
 ].join("\n");
 const README_PATH = process.env.README_PATH || "README.md";
-const noteLine = `同一批 ${publicRepos} 个公开库（个人公开库 ＋ 各年公开贡献记录发现的组织/他人公开库）；左图按你的 commit 数加权，右图按原始语言字节数汇总。`;
+const noteLine = `同一批 ${publicRepos} 个公开库（个人公开非 fork 库 ＋ 你提交过 PR 的组织/他人公开库）；左图按你的 commit 数加权，右图按原始语言字节数汇总。`;
 try {
   if (existsSync(README_PATH)) {
     const md = readFileSync(README_PATH, "utf8");
