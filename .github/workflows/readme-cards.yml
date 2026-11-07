@@ -40,10 +40,10 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/cardcore" --no-save --ignore-scripts \
             @stats-organization/github-readme-stats-core@2.3.0
 
-      # 语言卡收录个人公开非 fork 库 + 本人提交过 PR 的外部公开库（所有 PR 状态、分页读取）。
+      # 语言卡收录个人公开非 fork 库 + Contributors API 确认本人是 contributor 的外部公开库。
       # 上游的 affiliations 按"访问者"解析，bot 身份拿不到组织仓库，故不复用它的取数；
       # 渲染仍用上游 renderTopLanguages，观感一致。私有库因为 bot token 读不到，天然被排除。
-      # commit 权重仍按各年公开贡献记录累计；新增 PR 仓库自动纳入，无需改此配置。
+      # 候选由个人库、各年贡献和本人 PR 自动发现；逐库分页核验，权重与明细 commit 数同取 Contributors API。
       - name: Generate cards (stats + weighted and unweighted languages, single scan)
         env:
           GH_TOKEN: ${{ github.token }}

@@ -1,19 +1,19 @@
-// Public-only language cards: own public repos + public repos with authored PRs.
+// Public-only language cards: own public repos + verified contributor repos.
 //
-// Language-card inclusion uses the user's own non-fork repositories plus every
-// public repository where the user authored a PR (open, closed or merged).
-// PRs are paginated directly, rather than inferred from yearly contribution groups.
-// Repository IDs deduplicate renamed/transferred repos and repeated PRs.
+// Discover candidates from own non-fork repositories, yearly contribution groups
+// and paginated authored PRs. Verify the account against the paginated REST
+// contributors endpoint for every candidate; PR/issue/review alone never qualifies
+// an external repository. Stable repository IDs deduplicate the candidate set.
 //
-// Yearly contribution groups still supply commit weights and the stats card's
-// existing contribution metrics. Issue/review/commit-only external repositories
-// do not enter the language cards or their repository breakdown.
+// Language weights and breakdown commit counts come from that same contributors
+// response. Yearly contribution groups still supply the stats card's existing
+// contribution metrics.
 //
 // Weighting (commit-count proxy): GitHub exposes no per-author language bytes, so the
 // card cannot show "bytes you personally wrote". Instead each repository's language
 // bytes are weighted by the number of commits YOU made to that repo (from the
-// contribution graph). This is a proxy for "where you actually worked", not an exact
-// per-author byte count. See https://docs.github.com/en/account-and-profile/reference/profile-contributions-reference
+// contributors API). This is a proxy for "where you actually worked", not an exact
+// per-author byte count. See https://docs.github.com/en/rest/repos/repos#list-repository-contributors
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
 import path from "node:path";
@@ -56,8 +56,8 @@ const OWN_QUERY = `query ($login: String!, $first: Int!) {
   }
 }`;
 
-// 2) contribution years + per-year public repo groups (commit group also returns
-//    your commit count per repo, used as the contribution weight)
+// 2) contribution years + per-year repo groups discover additional candidates
+//    and preserve the stats card's existing contribution metrics.
 const YEARS_QUERY = `query ($login: String!) {
   user(login: $login) { contributionsCollection { contributionYears } }
 }`;
@@ -100,8 +100,8 @@ for (const node of own.user.repositories.nodes) {
   }
 }
 
-// Authored PRs, across all states and pages. Reviewing somebody else's PR does
-// not qualify a repository. Keep this set separate from stats-card discovery.
+// Authored PRs, across all states and pages, provide candidates even when the
+// yearly contribution groups did not list them. Contributor status is checked below.
 const PR_QUERY = `query ($login: String!, $after: String) {
   user(login: $login) {
     pullRequests(first: 100, after: $after, states: [OPEN, CLOSED, MERGED]) {
@@ -110,7 +110,6 @@ const PR_QUERY = `query ($login: String!, $after: String) {
     }
   }
 }`;
-const prRepoIds = new Set();
 let prCursor = null;
 do {
   const connection = (await gql(PR_QUERY, { login, after: prCursor })).user.pullRequests;
@@ -118,7 +117,6 @@ do {
     const repo = pr?.repository;
     if (!repo?.id || repo.isPrivate) continue;
     addRepo(repo);
-    prRepoIds.add(repo.id);
   }
   if (!connection.pageInfo.hasNextPage) break;
   const nextCursor = connection.pageInfo.endCursor;
@@ -145,8 +143,7 @@ const fetchLanguages = async (id) => {
   return edges;
 };
 
-// per-repo commit count (your contributions) -> contribution weight
-const commitCounts = new Map();
+// Preserve the stats card's contribution-based repository metric.
 const contributedIds = new Set(); // repos reached through contribution records
 let scannedYears = 0;
 for (const year of contributionYears) {
@@ -158,10 +155,6 @@ for (const year of contributionYears) {
   for (const item of col.commitContributionsByRepository) {
     addRepo(item.repository);
     if (item.repository?.id) contributedIds.add(item.repository.id);
-    if (item.repository?.id) {
-      const c = item.contributions?.totalCount || 0;
-      commitCounts.set(item.repository.id, (commitCounts.get(item.repository.id) || 0) + c);
-    }
   }
   for (const key of [
     "issueContributionsByRepository",
@@ -176,22 +169,56 @@ for (const year of contributionYears) {
   scannedYears += 1;
 }
 
-// fetch languages for contributed (non-owned) repos, then aggregate with commit weighting
+// Read all contributor pages, not just the top 100 shown in the Insights graph.
+// An unavailable/error response must fail the run, never erase a repo as "not a contributor".
+const contributorCommits = async (repo) => {
+  const repoPath = repo.nameWithOwner.split("/").map(encodeURIComponent).join("/");
+  for (let page = 1; ; page += 1) {
+    const res = await fetch(
+      `https://api.github.com/repos/${repoPath}/contributors?per_page=100&page=${page}`,
+      { headers: {
+        Authorization: `bearer ${token}`,
+        Accept: "application/vnd.github+json",
+        "User-Agent": "readme-cards",
+      } },
+    );
+    if (res.status === 204) return 0; // Empty repository.
+    if (!res.ok) {
+      throw new Error(`contributors for ${repo.nameWithOwner}: HTTP ${res.status}`);
+    }
+    const contributors = await res.json();
+    if (!Array.isArray(contributors)) {
+      throw new Error(`invalid contributors response for ${repo.nameWithOwner}`);
+    }
+    const author = contributors.find((entry) => entry.login?.toLowerCase() === login.toLowerCase());
+    if (author) {
+      if (!Number.isInteger(author.contributions) || author.contributions < 1) {
+        throw new Error(`invalid contributor commit count for ${repo.nameWithOwner}`);
+      }
+      return author.contributions;
+    }
+    if (!/rel="next"/.test(res.headers.get("link") || "")) return 0;
+  }
+};
+
+// Verify inclusion and use the same contributor commit count for weights and details.
 let publicRepos = 0;
 let bytesRaw = 0;
 const languages = {};
 const unweightedLanguages = {};
 const repoDetails = [];
 for (const repo of repos.values()) {
-  if (repo.isPrivate || (!ownIds.has(repo.id) && !prRepoIds.has(repo.id))) continue;
-  const weight = commitCounts.get(repo.id) || 1; // proxy: your commit activity in this repo
+  if (repo.isPrivate) continue;
+  const commits = await contributorCommits(repo);
+  if (!ownIds.has(repo.id) && commits === 0) continue;
+  const weight = commits || 1; // Retain own public repositories with no attributed commits.
   const edges = repo.languages?.length ? repo.languages : await fetchLanguages(repo.id);
   publicRepos += 1;
   const repoLanguages = edges.filter((edge) => edge?.node);
   const rawBytes = repoLanguages.reduce((sum, edge) => sum + edge.size, 0);
   repoDetails.push({
     name: repo.nameWithOwner,
-    commits: commitCounts.get(repo.id) || 0,
+    commits,
     weight,
     rawBytes,
     weightedBytes: rawBytes * weight,
@@ -255,9 +282,9 @@ const detailsBlock = [
   ...detailRows,
   `| **合计** | **${integer(commitTotal)}** | — | **${integer(bytesRaw)}** | **100.00%** | **100.00%** | — |`,
   "",
-  "- commit 数：GitHub 各年公开贡献记录中归属于你的 commit 数之和；0 表示该扫描未发现你的 commit 贡献记录。",
-  "- 收录范围：个人公开非 fork 仓库，以及你本人提交过 PR 的外部公开仓库；PR 包括打开、关闭和已合并的，只有 issue、review 或 commit 的外部仓库不收录。",
-  "- 权重 = commit 数；为 0 时按现有卡片算法取 1。PR 尚未合并或以 squash 等方式合并时，可能有 PR 而未查到你的 commit 记录。",
+  "- 收录范围：个人公开非 fork 仓库，以及 GitHub Contributors API 确认你是 contributor 的外部公开仓库；仅提交 PR、issue 或 review 不足以收录外部库。",
+  "- commit 数与权重来自 [GitHub Contributors API](https://docs.github.com/en/rest/repos/repos#list-repository-contributors) 对你账号返回的 contributions，个人库若未查到你的记录则显示 0、权重取 1。",
+  "- 候选库通过个人库、各年公开贡献记录和本人 PR 发现，再逐库分页核验 contributor 身份。API 可能缓存数小时；未关联账号的匿名提交无法据此识别。",
   "- 无加权占比 = 本仓库语言字节数 ÷ 全部仓库语言字节数；加权占比 = 本仓库语言字节数 × 权重 ÷ 全部仓库的加权字节数。",
   "- 语言字节数是 GitHub 返回的仓库语言数据（每库最多前 10 种语言），并非你个人编写的字节数；主要语言的百分比以本仓库采集到的语言字节数为分母。",
   "- 表格包含全部采集到的语言；卡片仅展示各自前 20 种语言并重新归一化，因此表格按仓库汇总的占比与卡片按语言展示的占比口径不同。百分比四舍五入后可能不恰好相加为 100%。",
@@ -266,7 +293,7 @@ const detailsBlock = [
   "<!-- lang-repo-details:end -->",
 ].join("\n");
 const README_PATH = process.env.README_PATH || "README.md";
-const noteLine = `同一批 ${publicRepos} 个公开库（个人公开非 fork 库 ＋ 你提交过 PR 的组织/他人公开库）；左图按你的 commit 数加权，右图按原始语言字节数汇总。`;
+const noteLine = `同一批 ${publicRepos} 个公开库（个人公开非 fork 库 ＋ 你是 contributor 的组织/他人公开库）；左图按你的 commit 数加权，右图按原始语言字节数汇总。`;
 try {
   if (existsSync(README_PATH)) {
     const md = readFileSync(README_PATH, "utf8");
