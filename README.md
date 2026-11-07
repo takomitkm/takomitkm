@@ -30,7 +30,7 @@ Every repository I own remains my responsibility until archived.
 
 [![](./profile/top-langs.svg)](https://github.com/stats-organization/github-stats-extended)
 
-按你 commit 数加权 · 26 个公开库（个人公开库 ＋ 各年公开贡献记录发现的组织/他人公开库）
+同一批 28 个公开库（个人公开库 ＋ 各年公开贡献记录发现的组织/他人公开库）；左图按你的 commit 数加权，右图按原始语言字节数汇总。
 
 ### Contact me
 
