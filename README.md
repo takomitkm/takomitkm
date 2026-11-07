@@ -34,6 +34,15 @@ Every repository I own remains my responsibility until archived.
 
 同一批 28 个公开库（个人公开库 ＋ 各年公开贡献记录发现的组织/他人公开库）；左图按你的 commit 数加权，右图按原始语言字节数汇总。
 
+<!-- lang-repo-details:start -->
+<details>
+<summary>展开仓库统计明细</summary>
+
+仓库、commit 数及加权／无加权占比将在下一次 Actions 生成卡片时自动更新。
+
+</details>
+<!-- lang-repo-details:end -->
+
 ### Contact me
 
 [![Email](https://img.shields.io/badge/Email-outlook-blue?style=flat-square)](mailto:takomitkm@outlook.com)

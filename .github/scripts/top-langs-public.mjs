@@ -154,11 +154,22 @@ let publicRepos = 0;
 let bytesRaw = 0;
 const languages = {};
 const unweightedLanguages = {};
+const repoDetails = [];
 for (const repo of repos.values()) {
   if (repo.isPrivate) continue;
   const weight = commitCounts.get(repo.id) || 1; // proxy: your commit activity in this repo
   const edges = repo.languages?.length ? repo.languages : await fetchLanguages(repo.id);
   publicRepos += 1;
+  const repoLanguages = edges.filter((edge) => edge?.node);
+  const rawBytes = repoLanguages.reduce((sum, edge) => sum + edge.size, 0);
+  repoDetails.push({
+    name: repo.nameWithOwner,
+    commits: commitCounts.get(repo.id) || 0,
+    weight,
+    rawBytes,
+    weightedBytes: rawBytes * weight,
+    languages: repoLanguages,
+  });
   for (const edge of edges) {
     if (!edge || !edge.node) continue;
     const key = edge.node.name;
@@ -190,17 +201,57 @@ if (bytesRaw === 0) {
 // upstream default formatting: size^1 * count^0 (count is repo count, exponent 0)
 // --- keep the README note in sync with the number computed above -------------------
 // Reuses publicRepos (already counted for the card). No second discovery pass.
+const weightedTotal = repoDetails.reduce((sum, repo) => sum + repo.weightedBytes, 0);
+const commitTotal = repoDetails.reduce((sum, repo) => sum + repo.commits, 0);
+const percent = (part, total) => total ? `${(part / total * 100).toFixed(2)}%` : "0.00%";
+const integer = (value) => value.toLocaleString("en-US");
+const cell = (value) => String(value).replace(/\|/g, "&#124;").replace(/[\r\n]/g, " ");
+const detailRows = repoDetails
+  .sort((a, b) => b.weightedBytes - a.weightedBytes || a.name.localeCompare(b.name))
+  .map((repo) => {
+    const mainLanguages = [...repo.languages]
+      .sort((a, b) => b.size - a.size)
+      .slice(0, 3)
+      .map((edge) => `${cell(edge.node.name)} ${percent(edge.size, repo.rawBytes)}`)
+      .join("、") || "—";
+    return `| [${cell(repo.name)}](https://github.com/${repo.name}) | ${integer(repo.commits)} | ${integer(repo.weight)} | ${integer(repo.rawBytes)} | ${percent(repo.rawBytes, bytesRaw)} | ${percent(repo.weightedBytes, weightedTotal)} | ${mainLanguages} |`;
+  });
+const detailsBlock = [
+  "<!-- lang-repo-details:start -->",
+  "<details>",
+  `<summary>展开仓库统计明细（${publicRepos} 个公开库 · ${integer(commitTotal)} 次 commit）</summary>`,
+  "",
+  "按加权占比从高到低排列；所有数值与上方卡片使用同一次扫描的数据。",
+  "",
+  "| 仓库 | 你的 commit 数 | 权重 | 语言字节数（B） | 无加权占比 | 加权占比 | 仓库主要语言（前三） |",
+  "| :--- | ---: | ---: | ---: | ---: | ---: | :--- |",
+  ...detailRows,
+  `| **合计** | **${integer(commitTotal)}** | — | **${integer(bytesRaw)}** | **100.00%** | **100.00%** | — |`,
+  "",
+  "- commit 数：GitHub 各年公开贡献记录中归属于你的 commit 数之和；0 表示该扫描未发现你的 commit 贡献记录。",
+  "- 权重 = commit 数；为 0 时按现有卡片算法取 1。仓库可能由 issue、PR、review 或个人公开库列表发现。",
+  "- 无加权占比 = 本仓库语言字节数 ÷ 全部仓库语言字节数；加权占比 = 本仓库语言字节数 × 权重 ÷ 全部仓库的加权字节数。",
+  "- 语言字节数是 GitHub 返回的仓库语言数据（每库最多前 10 种语言），并非你个人编写的字节数；主要语言的百分比以本仓库采集到的语言字节数为分母。",
+  "- 表格包含全部采集到的语言；卡片仅展示各自前 20 种语言并重新归一化，因此表格按仓库汇总的占比与卡片按语言展示的占比口径不同。百分比四舍五入后可能不恰好相加为 100%。",
+  "",
+  "</details>",
+  "<!-- lang-repo-details:end -->",
+].join("\n");
 const README_PATH = process.env.README_PATH || "README.md";
 const noteLine = `同一批 ${publicRepos} 个公开库（个人公开库 ＋ 各年公开贡献记录发现的组织/他人公开库）；左图按你的 commit 数加权，右图按原始语言字节数汇总。`;
 try {
   if (existsSync(README_PATH)) {
     const md = readFileSync(README_PATH, "utf8");
-    const updated = md.replace(/^(?:按你 commit 数加权 · |同一批 \d+ 个公开库).*$/m, noteLine);
+    const withNote = md.replace(/^(?:按你 commit 数加权 · |同一批 \d+ 个公开库).*$/m, noteLine);
+    const detailsPattern = /<!-- lang-repo-details:start -->[\s\S]*?<!-- lang-repo-details:end -->/;
+    const updated = detailsPattern.test(withNote)
+      ? withNote.replace(detailsPattern, () => detailsBlock)
+      : withNote.replace(noteLine, () => `${noteLine}\n\n${detailsBlock}`);
     if (updated !== md) {
       writeFileSync(README_PATH, updated);
       console.log(`updated ${README_PATH}: ${noteLine}`);
     } else {
-      console.log(`${README_PATH}: note line already current`);
+      console.log(`${README_PATH}: note and repository details already current`);
     }
   }
 } catch (err) {
