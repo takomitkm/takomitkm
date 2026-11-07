@@ -28,7 +28,9 @@ Every repository I own remains my responsibility until archived.
 
 ### Top langs
 
-[![](./profile/top-langs.svg)](https://github.com/stats-organization/github-stats-extended)
+| 按 commit 数加权 | 无加权（原始语言字节数） |
+| :---: | :---: |
+| [![按 commit 数加权的语言占比](./profile/top-langs.svg)](https://github.com/stats-organization/github-stats-extended) | [![无加权的语言占比](./profile/top-langs-unweighted.svg)](https://github.com/stats-organization/github-stats-extended) |
 
 同一批 28 个公开库（个人公开库 ＋ 各年公开贡献记录发现的组织/他人公开库）；左图按你的 commit 数加权，右图按原始语言字节数汇总。
 
