@@ -87,5 +87,11 @@ Every repository I own remains my responsibility until archived.
 All repos with the `-AIGC` suffix are entirely LLM-generated and have not received any code-level review or real-world runtime testing.
 I’m definitely abusing vibe coding—just look at all these commits.
 
+----
+
+懒得注册npm等等平台，插件和仓库只在GitHub有，小心重名！
+
+----
+
 # If you’re wondering why I’ve gone quiet, all I can tell you is I’ve burned through all my tokens.
 如果你是因为我 fork 了你的项目、没提 PR 才找来的，那你也 fork 我的分支继续做不就好啦～嘻嘻😝
