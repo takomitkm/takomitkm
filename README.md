@@ -84,7 +84,7 @@ Every repository I own remains my responsibility until archived.
 
 ### Tips
 
-All repos with the `-AIGC` suffix are entirely LLM-generated and have not received any code-level review from me.
+All repos with the `-AIGC` suffix are entirely LLM-generated and have not received any code-level review or real-world runtime testing.
 I’m definitely abusing vibe coding—just look at all these commits.
 
 # If you’re wondering why I’ve gone quiet, all I can tell you is I’ve burned through all my tokens.
