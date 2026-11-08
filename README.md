@@ -57,7 +57,7 @@ Every repository I own remains my responsibility until archived.
 | [WCIS-Team/Qwen3-0.6B4icraft430tai](https://github.com/WCIS-Team/Qwen3-0.6B4icraft430tai) | 9 | 9 | 142,323 | 1.04% | 0.60% | Python 91.32%、PowerShell 5.20%、Jinja 2.93% |
 | [WCIS-Team/WCIS-FPAI](https://github.com/WCIS-Team/WCIS-FPAI) | 64 | 64 | 18,079 | 0.13% | 0.55% | Python 100.00% |
 | [rimeinn/rime-moran](https://github.com/rimeinn/rime-moran) | 1 | 1 | 284,411 | 2.07% | 0.13% | Lua 70.46%、Python 25.12%、Shell 2.27% |
-| [takomitkm/dsh-bosskey](https://github.com/takomitkm/dsh-bosskey) | 3 | 3 | 45,065 | 0.33% | 0.06% | JavaScript 61.52%、PowerShell 38.48% |
+| [takomitkm/dsh-bosskey-AIGC](https://github.com/takomitkm/dsh-bosskey-AIGC) | 3 | 3 | 45,065 | 0.33% | 0.06% | JavaScript 61.52%、PowerShell 38.48% |
 | [takomitkm/dsh-enter2delworkspace-AIGC](https://github.com/takomitkm/dsh-enter2delworkspace-AIGC) | 1 | 1 | 31,741 | 0.23% | 0.01% | TypeScript 54.08%、PowerShell 28.60%、JavaScript 17.32% |
 | [takomitkm/asr-txt-cl-AIGC](https://github.com/takomitkm/asr-txt-cl-AIGC) | 0 | 1 | 25,365 | 0.18% | 0.01% | Python 99.40%、Batchfile 0.60% |
 | [takomitkm/dotfiles](https://github.com/takomitkm/dotfiles) | 2 | 2 | 1 | 0.00% | 0.00% | Shell 100.00% |
