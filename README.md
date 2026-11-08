@@ -88,3 +88,4 @@ All repos with the `-AIGC` suffix are entirely LLM-generated and have not receiv
 I’m definitely abusing vibe coding—just look at all these commits.
 
 # If you’re wondering why I’ve gone quiet, all I can tell you is I’ve burned through all my tokens.
+如果你是因为我 fork 了你的项目、没提 PR 才找来的，那你也 fork 我的分支继续做不就好啦～嘻嘻😝
