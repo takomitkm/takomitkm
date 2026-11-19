@@ -29,28 +29,28 @@ Both cards cover the same 36 public repos (my public non-fork repos + public rep
 
 <!-- lang-repo-details:start -->
 <details>
-<summary>Repository details (36 public repos · 795 commits)</summary>
+<summary>Repository details (36 public repos · 796 commits)</summary>
 
 Sorted by weighted share. All numbers come from the same scan as the cards above.
 
 | Repository | My commits | Weight | Language bytes | Unweighted share | Weighted share | Top 3 languages |
 | :--- | ---: | ---: | ---: | ---: | ---: | :--- |
-| [takomitkm/leveldb](https://github.com/takomitkm/leveldb) | 149 | 149 | 1,119,480 | 1.98% | 27.23% | C++ 89.17%, Python 6.07%, C 2.65% |
-| [takomitkm/pdd-dailycheck](https://github.com/takomitkm/pdd-dailycheck) | 112 | 112 | 994,429 | 1.76% | 18.18% | Python 61.13%, Shell 38.87% |
-| [takomitkm/trustyourharness](https://github.com/takomitkm/trustyourharness) | 96 | 96 | 1,140,922 | 2.02% | 17.88% | TypeScript 41.58%, Rust 35.85%, JavaScript 21.08% |
-| [vshulcz/deja-vu](https://github.com/vshulcz/deja-vu) | 3 | 3 | 22,046,660 | 39.07% | 10.80% | Go 96.98%, JavaScript 2.11%, Python 0.41% |
+| [takomitkm/leveldb](https://github.com/takomitkm/leveldb) | 149 | 149 | 1,119,480 | 1.98% | 27.22% | C++ 89.17%, Python 6.07%, C 2.65% |
+| [takomitkm/pdd-dailycheck](https://github.com/takomitkm/pdd-dailycheck) | 112 | 112 | 994,429 | 1.76% | 18.17% | Python 61.13%, Shell 38.87% |
+| [takomitkm/trustyourharness](https://github.com/takomitkm/trustyourharness) | 96 | 96 | 1,140,922 | 2.02% | 17.87% | TypeScript 41.58%, Rust 35.85%, JavaScript 21.08% |
+| [vshulcz/deja-vu](https://github.com/vshulcz/deja-vu) | 3 | 3 | 22,046,660 | 39.07% | 10.79% | Go 96.98%, JavaScript 2.11%, Python 0.41% |
 | [Nwflower/dsh-chat-import](https://github.com/Nwflower/dsh-chat-import) | 8 | 8 | 4,256,236 | 7.54% | 5.56% | JavaScript 100.00% |
 | [takomitkm/takomitkm.github.io](https://github.com/takomitkm/takomitkm.github.io) | 62 | 62 | 320,403 | 0.57% | 3.24% | JavaScript 53.61%, Stylus 26.45%, EJS 14.56% |
 | [takomitkm/dialhome](https://github.com/takomitkm/dialhome) | 28 | 28 | 588,671 | 1.04% | 2.69% | Go 69.05%, PowerShell 21.01%, Shell 7.49% |
 | [WCIS-Team/WCIS-FPAI-wiki](https://github.com/WCIS-Team/WCIS-FPAI-wiki) | 30 | 30 | 362,627 | 0.64% | 1.78% | Python 41.32%, HTML 39.18%, Shell 18.08% |
-| [Ikalus1988/MisakaNet](https://github.com/Ikalus1988/MisakaNet) | 1 | 1 | 10,846,670 | 19.22% | 1.77% | Python 73.68%, JavaScript 25.71%, Shell 0.38% |
+| [Ikalus1988/MisakaNet](https://github.com/Ikalus1988/MisakaNet) | 1 | 1 | 10,848,368 | 19.22% | 1.77% | Python 73.69%, JavaScript 25.70%, Shell 0.38% |
 | [WCIS-Team/fmql30tai-sdi-npu-face-recognition](https://github.com/WCIS-Team/fmql30tai-sdi-npu-face-recognition) | 3 | 3 | 3,112,290 | 5.52% | 1.52% | Python 55.03%, C++ 18.27%, Verilog 16.42% |
 | [WCIS-Team/ERNIE-4.5-0.3B-PT4icraft430tai](https://github.com/WCIS-Team/ERNIE-4.5-0.3B-PT4icraft430tai) | 19 | 19 | 490,974 | 0.87% | 1.52% | Python 98.77%, Shell 0.98%, Jinja 0.15% |
 | [takomitkm/astro-theme-mustom](https://github.com/takomitkm/astro-theme-mustom) | 22 | 22 | 413,851 | 0.73% | 1.49% | Astro 51.37%, TypeScript 40.46%, SCSS 5.78% |
 | [zilliztech/memsearch](https://github.com/zilliztech/memsearch) | 5 | 5 | 1,513,816 | 2.68% | 1.24% | Python 64.19%, JavaScript 17.04%, TypeScript 10.23% |
 | [takomitkm/loomos](https://github.com/takomitkm/loomos) | 12 | 12 | 520,782 | 0.92% | 1.02% | Rust 97.95%, Python 1.04%, Shell 1.01% |
 | [Soren-ABT/dsh-knowledge](https://github.com/Soren-ABT/dsh-knowledge) | 2 | 2 | 2,187,507 | 3.88% | 0.71% | TypeScript 94.49%, JavaScript 5.51% |
-| [takomitkm/Instrumentality-of-nmud](https://github.com/takomitkm/Instrumentality-of-nmud) | 17 | 17 | 239,840 | 0.43% | 0.67% | Python 68.08%, PowerShell 15.97%, JavaScript 12.47% |
+| [takomitkm/Instrumentality-of-nmud](https://github.com/takomitkm/Instrumentality-of-nmud) | 18 | 18 | 239,840 | 0.43% | 0.70% | Python 68.08%, PowerShell 15.97%, JavaScript 12.47% |
 | [WCIS-Team/Qwen2_0.5B_zg3.36.1_axi_demo](https://github.com/WCIS-Team/Qwen2_0.5B_zg3.36.1_axi_demo) | 11 | 11 | 325,630 | 0.58% | 0.58% | Python 65.93%, C++ 32.64%, Shell 1.33% |
 | [takomitkm/dsh-genshin-launch](https://github.com/takomitkm/dsh-genshin-launch) | 16 | 16 | 163,229 | 0.29% | 0.43% | TypeScript 90.55%, JavaScript 4.04%, Less 3.68% |
 | [WCIS-Team/tkmFPGA](https://github.com/WCIS-Team/tkmFPGA) | 2 | 2 | 1,188,091 | 2.11% | 0.39% | Verilog 40.53%, C++ 14.26%, SystemVerilog 12.87% |
@@ -71,7 +71,7 @@ Sorted by weighted share. All numbers come from the same scan as the cards above
 | [WCIS-Team/.github](https://github.com/WCIS-Team/.github) | 6 | 6 | 0 | 0.00% | 0.00% | — |
 | [WCIS-Team/HA4FPAI](https://github.com/WCIS-Team/HA4FPAI) | 3 | 3 | 0 | 0.00% | 0.00% | — |
 | [WCIS-Team/WCIS-FPAI-repos](https://github.com/WCIS-Team/WCIS-FPAI-repos) | 56 | 56 | 0 | 0.00% | 0.00% | — |
-| **Total** | **795** | — | **56,430,879** | **100.00%** | **100.00%** | — |
+| **Total** | **796** | — | **56,432,577** | **100.00%** | **100.00%** | — |
 
 - Scope: my public non-fork repos, plus public repos where the GitHub Contributors API confirms I'm a contributor; PRs, issues or reviews alone don't qualify an external repo.
 - Commit counts and weights come from the [GitHub Contributors API](https://docs.github.com/en/rest/repos/repos#list-repository-contributors); own repos where it finds no record show 0 commits and get weight 1.
