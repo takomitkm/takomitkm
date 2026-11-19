@@ -3,7 +3,7 @@
 Hi! I'm takomi (aka TKM)/八爪咪/たこみ. ✨IC专业双非大三绝赞逃课中
 
 ```
-Every repository I own remains my responsibility until archived.
+Every repo I own remains my responsibility until archived.
 ```
 
 ### Platforms
@@ -93,17 +93,20 @@ Sorted by weighted share. All numbers come from the same scan as the cards above
 ### Tips
 
 #### Warning
-All repositories tagged with the `aigc` topic have not been reviewed at the code level or thoroughly tested in real-world environments.
-I’m definitely abusing vibe coding—just look at all these commits.
-
-----
+- All repositories tagged with the `aigc` topic have not been reviewed at the code level or thoroughly tested in real-world environments.
+- I’m definitely abusing vibe coding—just look at all these commits.
 
 #### For users
-I can't be bothered to register on npm and other platforms, so my plugins and repositories are only available on GitHub. Watch out for impostors with the same name!
-
-----
+- I can't be bothered to register on npm and other platforms, so my plugins and repos r only available on GitHub. Watch out for the same name!
 
 #### For developers
-If you’re wondering why I’ve gone quiet, all I can tell you is I’ve burned through all my tokens.
+- If you’re wondering why I’ve gone quiet, all I can tell you is I’ve burned through all my tokens.
+- If you're here because I forked your project without opening a PR, why not just fork my branch and carry on? Hehe 😝
 
-If you're here because I forked your project without opening a PR, why not just fork my branch and carry on? Hehe 😝
+----
+### My licensing preferences
+
+- **End-user products:** [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.en.html) / [AGPL-3.0](https://www.gnu.org/licenses/agpl-3.0.en.html).
+- **Middleware and foundational components:** [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0) / [LGPL-3.0](https://www.gnu.org/licenses/lgpl-3.0.en.html) / [MPL-2.0](https://www.mozilla.org/en-US/MPL/2.0/).
+- **Scripts and small AIGC projects:** [0BSD](https://opensource.org/license/0bsd).
+- **Visual designs and creative assets:** [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
