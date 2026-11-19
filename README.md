@@ -92,14 +92,18 @@ Sorted by weighted share. All numbers come from the same scan as the cards above
 
 ### Tips
 
+#### Warning
 All repositories tagged with the `aigc` topic have not been reviewed at the code level or thoroughly tested in real-world environments.
 I’m definitely abusing vibe coding—just look at all these commits.
 
 ----
 
+#### For users
 I can't be bothered to register on npm and other platforms, so my plugins and repositories are only available on GitHub. Watch out for impostors with the same name!
 
 ----
 
-# If you’re wondering why I’ve gone quiet, all I can tell you is I’ve burned through all my tokens.
+#### For developers
+If you’re wondering why I’ve gone quiet, all I can tell you is I’ve burned through all my tokens.
+
 If you're here because I forked your project without opening a PR, why not just fork my branch and carry on? Hehe 😝
