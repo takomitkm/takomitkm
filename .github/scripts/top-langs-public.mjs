@@ -267,37 +267,37 @@ const detailRows = repoDetails
       .sort((a, b) => b.size - a.size)
       .slice(0, 3)
       .map((edge) => `${cell(edge.node.name)} ${percent(edge.size, repo.rawBytes)}`)
-      .join("、") || "—";
+      .join(", ") || "—";
     return `| [${cell(repo.name)}](https://github.com/${repo.name}) | ${integer(repo.commits)} | ${integer(repo.weight)} | ${integer(repo.rawBytes)} | ${percent(repo.rawBytes, bytesRaw)} | ${percent(repo.weightedBytes, weightedTotal)} | ${mainLanguages} |`;
   });
 const detailsBlock = [
   "<!-- lang-repo-details:start -->",
   "<details>",
-  `<summary>展开仓库统计明细（${publicRepos} 个公开库 · ${integer(commitTotal)} 次 commit）</summary>`,
+  `<summary>Repository details (${publicRepos} public repos · ${integer(commitTotal)} commits)</summary>`,
   "",
-  "按加权占比从高到低排列；所有数值与上方卡片使用同一次扫描的数据。",
+  "Sorted by weighted share. All numbers come from the same scan as the cards above.",
   "",
-  "| 仓库 | 你的 commit 数 | 权重 | 语言字节数（B） | 无加权占比 | 加权占比 | 仓库主要语言（前三） |",
+  "| Repository | My commits | Weight | Language bytes | Unweighted share | Weighted share | Top 3 languages |",
   "| :--- | ---: | ---: | ---: | ---: | ---: | :--- |",
   ...detailRows,
-  `| **合计** | **${integer(commitTotal)}** | — | **${integer(bytesRaw)}** | **100.00%** | **100.00%** | — |`,
+  `| **Total** | **${integer(commitTotal)}** | — | **${integer(bytesRaw)}** | **100.00%** | **100.00%** | — |`,
   "",
-  "- 收录范围：个人公开非 fork 仓库，以及 GitHub Contributors API 确认你是 contributor 的外部公开仓库；仅提交 PR、issue 或 review 不足以收录外部库。",
-  "- commit 数与权重来自 [GitHub Contributors API](https://docs.github.com/en/rest/repos/repos#list-repository-contributors) 对你账号返回的 contributions，个人库若未查到你的记录则显示 0、权重取 1。",
-  "- 候选库通过个人库、各年公开贡献记录和本人 PR 发现，再逐库分页核验 contributor 身份。API 可能缓存数小时；未关联账号的匿名提交无法据此识别。",
-  "- 无加权占比 = 本仓库语言字节数 ÷ 全部仓库语言字节数；加权占比 = 本仓库语言字节数 × 权重 ÷ 全部仓库的加权字节数。",
-  "- 语言字节数是 GitHub 返回的仓库语言数据（每库最多前 10 种语言），并非你个人编写的字节数；主要语言的百分比以本仓库采集到的语言字节数为分母。",
-  "- 表格包含全部采集到的语言；卡片仅展示各自前 20 种语言并重新归一化，因此表格按仓库汇总的占比与卡片按语言展示的占比口径不同。百分比四舍五入后可能不恰好相加为 100%。",
+  "- Scope: my public non-fork repos, plus public repos where the GitHub Contributors API confirms I'm a contributor; PRs, issues or reviews alone don't qualify an external repo.",
+  "- Commit counts and weights come from the [GitHub Contributors API](https://docs.github.com/en/rest/repos/repos#list-repository-contributors); own repos where it finds no record show 0 commits and get weight 1.",
+  "- Candidate repos come from my own repos, yearly public contributions and my authored PRs, then get verified page by page against the contributors endpoint. The API may cache for hours; anonymous commits with no linked account can't be attributed.",
+  "- Unweighted share = repo language bytes ÷ total language bytes; weighted share = repo language bytes × weight ÷ total weighted bytes.",
+  "- Language bytes are GitHub's per-repo language data (top 10 languages per repo), not bytes I personally wrote; the top-language percentages use that repo's collected bytes as the denominator.",
+  "- The table lists all collected languages; each card shows only its top 20 and renormalizes, so per-repo shares here and per-language shares on the cards differ by design. Rounded percentages may not sum to exactly 100%.",
   "",
   "</details>",
   "<!-- lang-repo-details:end -->",
 ].join("\n");
 const README_PATH = process.env.README_PATH || "README.md";
-const noteLine = `同一批 ${publicRepos} 个公开库（个人公开非 fork 库 ＋ 你是 contributor 的组织/他人公开库）；左图按你的 commit 数加权，右图按原始语言字节数汇总。`;
+const noteLine = `Both cards cover the same ${publicRepos} public repos (my public non-fork repos + public repos where I'm a contributor); the left one is weighted by commit counts, the right one sums raw language bytes.`;
 try {
   if (existsSync(README_PATH)) {
     const md = readFileSync(README_PATH, "utf8");
-    const withNote = md.replace(/^(?:按你 commit 数加权 · |同一批 \d+ 个公开库).*$/m, noteLine);
+    const withNote = md.replace(/^(?:按你 commit 数加权 · |同一批 \d+ 个公开库|Both cards cover the same \d+ public repos).*$/m, noteLine);
     const detailsPattern = /<!-- lang-repo-details:start -->[\s\S]*?<!-- lang-repo-details:end -->/;
     const updated = detailsPattern.test(withNote)
       ? withNote.replace(detailsPattern, () => detailsBlock)
