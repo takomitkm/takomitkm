@@ -1,6 +1,6 @@
 # TaKoMi
-
-Hi! I'm takomi (aka TKM)/八爪咪/たこみ. ✨IC专业双非大三绝赞逃课中
+FPGAChina 2026 Loser, gaokao loser, AI slop factory, notification spammer, professional apologizer and thanker.
+## Hi! I'm takomi (aka TKM)/八爪咪/たこみ. ✨IC专业双非大三绝赞逃课中
 
 ```
 Every repo I own remains my responsibility until archived.
