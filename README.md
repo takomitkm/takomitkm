@@ -1,9 +1,9 @@
 # TaKoMi
-FPGAChina 2026 Loser (failed with [LoomOS](https://github.com/WCIS-Team/loomos)), gaokao loser,  [AI slop factory]([https://github.com/takomitkm](https://github.com/takomitkm#warning)), notification spammer, professional apologizer and thanker.
+[FPGAChina](http://fpgachina.cn/) 2026 Loser (failed with [LoomOS](https://github.com/WCIS-Team/loomos)), [gaokao](https://gaokao.neea.edu.cn/) loser,  [AI slop factory](https://github.com/takomitkm#warning), notification spammer, professional apologizer and thanker.
 ## Hi! I'm takomi (aka TKM)/八爪咪/たこみ. ✨IC专业双非大三绝赞逃课中
 
 ```
-Every repo I own remains my responsibility until archived.
+Every repo I own remains my [responsibility](https://github.com/takomitkm#for-developers) until archived.
 ```
 
 ### Platforms
@@ -99,7 +99,7 @@ Sorted by weighted share. All numbers come from the same scan as the cards above
 ### Tips
 
 #### Warning
-- All repositories tagged with the `aigc` topic have not been reviewed at the code level or thoroughly tested in real-world environments.
+- [All repositories tagged with the `aigc` topic](https://github.com/repos?q=owner%3A%40takomitkm+topic%3Aaigc) have not been reviewed at the code level or thoroughly tested in real-world environments.
 - I’m definitely abusing vibe coding—just look at all these commits.
 
 #### For users
