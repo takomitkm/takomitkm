@@ -105,7 +105,7 @@ Sorted by weighted share. All numbers come from the same scan as the cards above
 #### For developers
 - If you’re wondering why I’ve gone quiet, all I can tell you is I’ve burned through all my tokens.
 - If you're here because I forked your project without opening a PR, why not just fork my branch and carry on? Hehe 😝
-
+- Sorry for ai slop, u can regard as prototype. I send cuz I dont wanna my thought died. I will check them at least in a year I guess... Im an IC student learning OC, why im here I wonder...
 ----
 ### My licensing preferences
 
