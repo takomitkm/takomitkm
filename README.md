@@ -3,7 +3,7 @@
 ## Hi! I'm takomi (aka TKM)/八爪咪/たこみ. ✨IC专业双非大三绝赞逃课中
 
 ```
-Every repo I own remains my [responsibility](https://github.com/takomitkm#for-developers) until archived.
+Every repo I own remains my responsibility until archived.
 ```
 
 ### Platforms
@@ -103,7 +103,7 @@ Sorted by weighted share. All numbers come from the same scan as the cards above
 - I’m definitely abusing vibe coding—just look at all these commits.
 
 #### For users
-- I can't be bothered to register on npm and other platforms, so my plugins and repos r only available on GitHub. Watch out for the same name!
+- I can't be bothered to register on npm and many other platforms, so my plugins and repos r only available on GitHub. Watch out for the same name!
 
 #### For developers
 - If you’re wondering why I’ve gone quiet, all I can tell you is I’ve burned through all my tokens.
