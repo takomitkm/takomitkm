@@ -1,5 +1,5 @@
 # TaKoMi
-FPGAChina 2026 Loser, gaokao loser, AI slop factory, notification spammer, professional apologizer and thanker.
+FPGAChina 2026 Loser (failed with [LoomOS](https://github.com/WCIS-Team/loomos)), gaokao loser,  [AI slop factory]([https://github.com/takomitkm](https://github.com/takomitkm#warning)), notification spammer, professional apologizer and thanker.
 ## Hi! I'm takomi (aka TKM)/八爪咪/たこみ. ✨IC专业双非大三绝赞逃课中
 
 ```
