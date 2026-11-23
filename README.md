@@ -36,13 +36,13 @@ Sorted by weighted share. All numbers come from the same scan as the cards above
 | Repository | My commits | Weight | Language bytes | Unweighted share | Weighted share | Top 3 languages |
 | :--- | ---: | ---: | ---: | ---: | ---: | :--- |
 | [takomitkm/leveldb](https://github.com/takomitkm/leveldb) | 162 | 162 | 1,119,480 | 1.89% | 23.48% | C++ 89.17%, Python 6.07%, C 2.65% |
-| [vshulcz/deja-vu](https://github.com/vshulcz/deja-vu) | 7 | 7 | 22,962,767 | 38.68% | 20.81% | Go 97.08%, JavaScript 2.05%, Python 0.40% |
+| [vshulcz/deja-vu](https://github.com/vshulcz/deja-vu) | 7 | 7 | 22,962,767 | 38.67% | 20.81% | Go 97.08%, JavaScript 2.05%, Python 0.40% |
 | [takomitkm/trustyourharness](https://github.com/takomitkm/trustyourharness) | 102 | 102 | 1,218,995 | 2.05% | 16.10% | Rust 39.96%, TypeScript 38.92%, JavaScript 19.73% |
-| [takomitkm/pdd-dailycheck](https://github.com/takomitkm/pdd-dailycheck) | 113 | 113 | 994,429 | 1.68% | 14.55% | Python 61.13%, Shell 38.87% |
+| [takomitkm/pdd-dailycheck](https://github.com/takomitkm/pdd-dailycheck) | 113 | 113 | 994,429 | 1.67% | 14.55% | Python 61.13%, Shell 38.87% |
 | [takomitkm/loomos](https://github.com/takomitkm/loomos) | 63 | 63 | 855,017 | 1.44% | 6.98% | Rust 93.85%, Nix 3.02%, Python 2.52% |
 | [Nwflower/dsh-chat-import](https://github.com/Nwflower/dsh-chat-import) | 8 | 8 | 4,256,236 | 7.17% | 4.41% | JavaScript 100.00% |
 | [takomitkm/takomitkm.github.io](https://github.com/takomitkm/takomitkm.github.io) | 62 | 62 | 320,403 | 0.54% | 2.57% | JavaScript 53.61%, Stylus 26.45%, EJS 14.56% |
-| [Ikalus1988/MisakaNet](https://github.com/Ikalus1988/MisakaNet) | 1 | 1 | 10,938,209 | 18.42% | 1.42% | Python 73.90%, JavaScript 25.49%, Shell 0.37% |
+| [Ikalus1988/MisakaNet](https://github.com/Ikalus1988/MisakaNet) | 1 | 1 | 10,949,439 | 18.44% | 1.42% | Python 73.93%, JavaScript 25.47%, Shell 0.37% |
 | [WCIS-Team/WCIS-FPAI-wiki](https://github.com/WCIS-Team/WCIS-FPAI-wiki) | 30 | 30 | 362,627 | 0.61% | 1.41% | Python 41.32%, HTML 39.18%, Shell 18.08% |
 | [WCIS-Team/fmql30tai-sdi-npu-face-recognition](https://github.com/WCIS-Team/fmql30tai-sdi-npu-face-recognition) | 3 | 3 | 3,112,290 | 5.24% | 1.21% | Python 55.03%, C++ 18.27%, Verilog 16.42% |
 | [WCIS-Team/ERNIE-4.5-0.3B-PT4icraft430tai](https://github.com/WCIS-Team/ERNIE-4.5-0.3B-PT4icraft430tai) | 19 | 19 | 490,974 | 0.83% | 1.21% | Python 98.77%, Shell 0.98%, Jinja 0.15% |
@@ -53,14 +53,14 @@ Sorted by weighted share. All numbers come from the same scan as the cards above
 | [WCIS-Team/Qwen2_0.5B_zg3.36.1_axi_demo](https://github.com/WCIS-Team/Qwen2_0.5B_zg3.36.1_axi_demo) | 11 | 11 | 325,630 | 0.55% | 0.46% | Python 65.93%, C++ 32.64%, Shell 1.33% |
 | [takomitkm/dsh-genshin-launch](https://github.com/takomitkm/dsh-genshin-launch) | 16 | 16 | 163,229 | 0.27% | 0.34% | TypeScript 90.55%, JavaScript 4.04%, Less 3.68% |
 | [WCIS-Team/tkmFPGA](https://github.com/WCIS-Team/tkmFPGA) | 2 | 2 | 1,188,091 | 2.00% | 0.31% | Verilog 40.53%, C++ 14.26%, SystemVerilog 12.87% |
-| [amzxyz/librime-evo](https://github.com/amzxyz/librime-evo) | 1 | 1 | 2,075,519 | 3.50% | 0.27% | C++ 87.11%, C 10.07%, CMake 1.43% |
+| [amzxyz/librime-evo](https://github.com/amzxyz/librime-evo) | 1 | 1 | 2,076,958 | 3.50% | 0.27% | C++ 87.12%, C 10.06%, CMake 1.43% |
 | [rime/librime](https://github.com/rime/librime) | 1 | 1 | 1,578,966 | 2.66% | 0.20% | C++ 83.00%, C 13.22%, CMake 1.97% |
 | [WCIS-Team/WCIS-FPAI](https://github.com/WCIS-Team/WCIS-FPAI) | 83 | 83 | 18,079 | 0.03% | 0.19% | Python 100.00% |
 | [Gyl1219/magpie-providers-hub](https://github.com/Gyl1219/magpie-providers-hub) | 1 | 1 | 1,323,796 | 2.23% | 0.17% | JavaScript 99.64%, HTML 0.30%, Shell 0.06% |
 | [WCIS-Team/Qwen3-0.6B4icraft430tai](https://github.com/WCIS-Team/Qwen3-0.6B4icraft430tai) | 9 | 9 | 142,323 | 0.24% | 0.17% | Python 91.32%, PowerShell 5.20%, Jinja 2.93% |
 | [takomitkm/dsh-service-contract](https://github.com/takomitkm/dsh-service-contract) | 9 | 9 | 89,600 | 0.15% | 0.10% | Python 96.18%, JavaScript 3.82% |
 | [takomitkm/OutboundAll](https://github.com/takomitkm/OutboundAll) | 0 | 1 | 364,293 | 0.61% | 0.05% | Go 52.17%, PowerShell 33.96%, Shell 9.89% |
-| [takomitkm/dotfiles](https://github.com/takomitkm/dotfiles) | 7 | 7 | 50,468 | 0.09% | 0.05% | Python 92.73%, PowerShell 3.86%, Batchfile 3.41% |
+| [takomitkm/dotfiles](https://github.com/takomitkm/dotfiles) | 7 | 7 | 50,468 | 0.08% | 0.05% | Python 92.73%, PowerShell 3.86%, Batchfile 3.41% |
 | [hluica/dsh-enhanced-prompt](https://github.com/hluica/dsh-enhanced-prompt) | 3 | 3 | 114,759 | 0.19% | 0.04% | JavaScript 100.00% |
 | [takomitkm/StarRailCopilot-AccountSwitch](https://github.com/takomitkm/StarRailCopilot-AccountSwitch) | 7 | 7 | 43,508 | 0.07% | 0.04% | Python 100.00% |
 | [rimeinn/rime-moran](https://github.com/rimeinn/rime-moran) | 1 | 1 | 285,508 | 0.48% | 0.04% | Lua 70.19%, Python 25.41%, Shell 2.26% |
@@ -77,7 +77,7 @@ Sorted by weighted share. All numbers come from the same scan as the cards above
 | [WCIS-Team/.github](https://github.com/WCIS-Team/.github) | 6 | 6 | 0 | 0.00% | 0.00% | — |
 | [WCIS-Team/HA4FPAI](https://github.com/WCIS-Team/HA4FPAI) | 3 | 3 | 0 | 0.00% | 0.00% | — |
 | [WCIS-Team/WCIS-FPAI-repos](https://github.com/WCIS-Team/WCIS-FPAI-repos) | 56 | 56 | 0 | 0.00% | 0.00% | — |
-| **Total** | **871** | — | **59,368,298** | **100.00%** | **100.00%** | — |
+| **Total** | **871** | — | **59,380,967** | **100.00%** | **100.00%** | — |
 
 - Scope: my public non-fork repos, plus public repos where the GitHub Contributors API confirms I'm a contributor; PRs, issues or reviews alone don't qualify an external repo.
 - Commit counts and weights come from the [GitHub Contributors API](https://docs.github.com/en/rest/repos/repos#list-repository-contributors); own repos where it finds no record show 0 commits and get weight 1.

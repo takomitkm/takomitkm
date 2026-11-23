@@ -138,7 +138,7 @@
           data-testid="lang-progress"
           x="0"
           y="0"
-          width="94.81"
+          width="94.79"
           height="8"
           fill="#00ADD8"
         />
@@ -146,9 +146,9 @@
         <rect
           mask="url(#rect-mask)"
           data-testid="lang-progress"
-          x="94.81"
+          x="94.79"
           y="0"
-          width="56.09"
+          width="56.12"
           height="8"
           fill="#3572A5"
         />
@@ -156,9 +156,9 @@
         <rect
           mask="url(#rect-mask)"
           data-testid="lang-progress"
-          x="150.9"
+          x="150.91"
           y="0"
-          width="43.01"
+          width="43"
           height="8"
           fill="#f1e05a"
         />
@@ -268,7 +268,7 @@
           data-testid="lang-progress"
           x="247.26999999999998"
           y="0"
-          width="10.85"
+          width="10.84"
           height="8"
           fill="#000080"
         />
@@ -276,7 +276,7 @@
         <rect
           mask="url(#rect-mask)"
           data-testid="lang-progress"
-          x="248.11999999999998"
+          x="248.10999999999999"
           y="0"
           width="10.64"
           height="8"
@@ -286,7 +286,7 @@
         <rect
           mask="url(#rect-mask)"
           data-testid="lang-progress"
-          x="248.75999999999996"
+          x="248.74999999999997"
           y="0"
           width="10.44"
           height="8"
@@ -296,7 +296,7 @@
         <rect
           mask="url(#rect-mask)"
           data-testid="lang-progress"
-          x="249.19999999999996"
+          x="249.18999999999997"
           y="0"
           width="10.36"
           height="8"
@@ -306,7 +306,7 @@
         <rect
           mask="url(#rect-mask)"
           data-testid="lang-progress"
-          x="249.55999999999997"
+          x="249.54999999999998"
           y="0"
           width="10.2"
           height="8"
@@ -316,7 +316,7 @@
         <rect
           mask="url(#rect-mask)"
           data-testid="lang-progress"
-          x="249.75999999999996"
+          x="249.74999999999997"
           y="0"
           width="10.14"
           height="8"
@@ -326,7 +326,7 @@
         <rect
           mask="url(#rect-mask)"
           data-testid="lang-progress"
-          x="249.89999999999995"
+          x="249.88999999999996"
           y="0"
           width="10.11"
           height="8"
@@ -346,7 +346,7 @@
     <g class="stagger" style="animation-delay: 600ms">
       <circle cx="5" cy="6" r="5" fill="#3572A5" />
       <text data-testid="lang-name" x="15" y="10" class='lang-name'>
-        Python 22.43%
+        Python 22.45%
       </text>
     </g>
   </g><g transform="translate(0, 50)">
