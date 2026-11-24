@@ -109,6 +109,20 @@ Sorted by weighted share. All numbers come from the same scan as the cards above
 - If you’re wondering why I’ve gone quiet, all I can tell you is I’ve burned through all my tokens.
 - If you're here because I forked your project without opening a PR, why not just fork my branch and carry on? Hehe 😝
 - Sorry for ai slop, u can regard as prototype. I send cuz I dont wanna my thought died. I will check them at least in a year I guess... Im an IC student learning OC, why im here I wonder...
+
+#### For PR reviewers
+
+**Please do not review Draft PRs.**
+
+If I convert a PR to Draft, it means one of the following:
+
+- **Partially reviewed AIGC**: The PR contains AI-generated or AI-assisted changes that have not yet been fully reviewed or validated by me.
+- **Known issues:** I've identified problems, bugs, or incorrect changes that need further investigation or fixing before the PR is ready.
+
+In either case, the PR is **not ready for review**. Please do not spend time reviewing it until I explicitly mark it as **Ready for review**.
+
+A Draft PR becoming Ready for review is my indication that I've completed the necessary checks and am ready for feedback.
+
 ----
 ### My licensing preferences
 
