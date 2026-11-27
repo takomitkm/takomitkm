@@ -1,7 +1,7 @@
 # TaKoMi
 [FPGAChina](http://fpgachina.cn/) 2026 Loser (failed at the first hurdle with [Our Team](https://github.com/WCIS-Team/)),  [AI slop factory](https://github.com/takomitkm#warning), notification spammer, professional apologizer and thanker.
 ## Hi! I'm takomi (aka TKM)/八爪咪/たこみ. ✨IC专业双非大三绝赞逃课中
-
+# AFK for a while cuz the death of my devs stop my works.
 ```
 Every repo I own remains my responsibility until archived.
 ```
@@ -124,6 +124,8 @@ If I convert a PR to Draft, it means one of the following:
 In either case, the PR is **not ready for review**. Please do not spend time reviewing it until I explicitly mark it as **Ready for review**.
 
 A Draft PR becoming Ready for review is my indication that I've completed the necessary checks and am ready for feedback.
+
+##### IF u find me sending ai slop, i must forgot checking what i send, im sorry and hope u can @ me to update it.
 
 ----
 ### My licensing preferences
